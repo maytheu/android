@@ -31,4 +31,22 @@ fun main() {
         //if (i % 3 == 0) println("multiples of 3 - $i")
 
     }
+
+    /////////////////////////// COLLECTION IN KOTLIN
+    //similar to array in js is list
+    val fixedList= listOf<String>("1","2")
+    val mutableList = mutableListOf<Int>(1,2,3,4,5,6)
+    println("$fixedList list of cant be changed" )
+    println("$mutableList list of can be modified" )
+
+    println()
+    println("Similar to listof, setOf cannot be modified, use mutatblesetof")
+    println("setof accept only unique values")
+    println()
+
+    println("Mapof()")
+    val setMap = mapOf<String, Int>("up" to 1, "down" to 2)
+    println("mapof $setMap, keys: ${setMap.keys}, \nentries: ${setMap.values}")
+    println("mutablemapof(), allows us to mutate map")
+    println("https://medium.com/mobile-app-development-publication/kotlin-collection-functions-cheat-sheet-975371a96c4b")
 }
