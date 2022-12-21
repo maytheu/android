@@ -34,10 +34,10 @@ fun main() {
 
     /////////////////////////// COLLECTION IN KOTLIN
     //similar to array in js is list
-    val fixedList= listOf<String>("1","2")
-    val mutableList = mutableListOf<Int>(1,2,3,4,5,6)
-    println("$fixedList list of cant be changed" )
-    println("$mutableList list of can be modified" )
+    val fixedList = listOf<String>("1", "2")
+    val mutableList = mutableListOf<Int>(1, 2, 3, 4, 5, 6)
+    println("$fixedList list of cant be changed")
+    println("$mutableList list of can be modified")
 
     println()
     println("Similar to listof, setOf cannot be modified, use mutatblesetof")
@@ -49,4 +49,40 @@ fun main() {
     println("mapof $setMap, keys: ${setMap.keys}, \nentries: ${setMap.values}")
     println("mutablemapof(), allows us to mutate map")
     println("https://medium.com/mobile-app-development-publication/kotlin-collection-functions-cheat-sheet-975371a96c4b")
+
+    println("////////////////////////////////////////OOP")
+    val car = Car()
+    car.desc = "Mutable with var"
+    println("Class pps of Car ${car.model}, ${car.desc}")
+    println("invoking methoda ${car.drive()}")
+
+    val kontCar = KotlinCar(model = "Toyota")
+    println("using kotlin syntax ${kontCar.model}")
+
+    val anotherCar = KotlinCar()
+    println(anotherCar.model)
+
+}
+
+//////////////OOP
+class Car {
+    val color = "Red"
+    val model = "Benz"
+    var desc: String = ""
+
+    ///////////////Methods
+    fun drive() {
+        println("Vrooooooooooooooooooooooom")
+    }
+}
+
+class KotlinCar(var color: String = "Red", var model: String = "Benz") {
+    init {
+        println("init blco conatins the initial block to run within a lass")
+        if(model !== "Benz"){
+            println("The model is not initialize by the class")
+        }else{
+            println("it is initialize by the class")
+        }
+    }
 }
