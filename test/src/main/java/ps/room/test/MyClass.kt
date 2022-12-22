@@ -62,6 +62,13 @@ fun main() {
     val anotherCar = KotlinCar()
     println(anotherCar.model)
 
+    println(anotherCar.speed(1, 10))
+
+    println()
+    val truck = InheritClass("Blue", "Iveco")
+    println("From inherited class ${truck.model}")
+    println("overiding inherited class ${truck.drive()}")
+
 }
 
 //////////////OOP
@@ -76,13 +83,29 @@ class Car {
     }
 }
 
-class KotlinCar(var color: String = "Red", var model: String = "Benz") {
+open class KotlinCar(var color: String = "Red", var model: String = "Benz") {
     init {
         println("init blco conatins the initial block to run within a lass")
-        if(model !== "Benz"){
+        if (model !== "Benz") {
             println("The model is not initialize by the class")
-        }else{
+        } else {
             println("it is initialize by the class")
         }
+    }
+
+    fun speed(min: Int, max: Int) {
+        println("Min speed is $min and max speed is $max")
+    }
+
+    open fun drive() {
+        println("Vrooooooooooooooooooooooom")
+    }
+}
+
+
+/////////////////////////////INHERITANCE
+class InheritClass(color: String, model: String) : KotlinCar(color, model){
+    override fun drive() {
+        println("Truck vroom")
     }
 }
