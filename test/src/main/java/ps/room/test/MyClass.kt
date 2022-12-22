@@ -69,6 +69,10 @@ fun main() {
     println("From inherited class ${truck.model}")
     println("overiding inherited class ${truck.drive()}")
 
+    println()
+    val interfa = ImplementInt("Button")
+    interfa.onClick("Perform button action")
+
 }
 
 //////////////OOP
@@ -107,5 +111,16 @@ open class KotlinCar(var color: String = "Red", var model: String = "Benz") {
 class InheritClass(color: String, model: String) : KotlinCar(color, model){
     override fun drive() {
         println("Truck vroom")
+    }
+}
+
+///////////////////////////INTERFACES
+interface ClickEvt{
+    fun onClick(message:String)
+}
+
+class ImplementInt(val label:String):ClickEvt{
+    override fun onClick(message: String) {
+        println("using interface, $label with $message from inherited class")
     }
 }
