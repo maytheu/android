@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    val counter = remember { mutableStateOf(0) }
     // A surface container using the 'background' color from the theme
     Surface(
         modifier = Modifier
@@ -46,35 +47,42 @@ fun MyApp() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "$100", style = TextStyle(color = Color.White, fontSize = 45.sp, fontWeight = FontWeight.ExtraBold))
-            
+            Text(
+                text = "$${counter.value}",
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 45.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+            )
+
             Spacer(modifier = Modifier.height(100.dp))
-            
-            CreateCircle()
+
+            CreateCircle(counter.value, updateCounter = { newVal ->
+                counter.value = newVal
+            })
         }
     }
 }
 
 @Composable
-fun CreateCircle() {
+fun CreateCircle(counter: Int, updateCounter: (Int) -> Unit) {
     //inform composable t update
-    var counter  by remember {
-        mutableStateOf(0)
-    }
+//    var counter  by remember { mutableStateOf(0) }
     Card(
         modifier = Modifier
             .padding(3.dp)
             .size(105.dp)
             .clickable {
 
-                counter += 1
-                Log.d("circle", counter.toString())
+                updateCounter(counter + 1)
+//                counter += 1, only valid suing by remember
             },
         shape = CircleShape,
         elevation = 5.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(text = "Tap $counter")
+            Text(text = "Tap")
         }
     }
 }
