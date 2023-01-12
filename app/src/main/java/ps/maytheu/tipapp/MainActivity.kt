@@ -4,6 +4,7 @@ import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -44,7 +45,7 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun TopMenu(totalPerson:Double=134.0) {
+fun TopMenu(totalPerson: Double = 134.0) {
     Surface(modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
@@ -64,13 +65,33 @@ fun TopMenu(totalPerson:Double=134.0) {
     }
 }
 
+@Composable
+fun MainContent() {
+    Surface(modifier = Modifier
+            .padding(3.dp)
+            .fillMaxWidth(),
+            shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+//            .height(450.dp)
+//            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
+            elevation = 5.dp, border = BorderStroke(width = 1.dp, color = Color.LightGray)) {
+        Column() {
+            Text(text = "hiiiiiiii")
+            Text(text = "hiiiiiiii")
+            Text(text = "hiiiiiiii")
+            Text(text = "hiiiiiiii")
+            Text(text = "hiiiiiiii")
+        }
+
+    }
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     TipAppTheme {
         MyApp {
-            Text("Hi")
-            TopMenu()
+            MainContent()
         }
     }
 }
