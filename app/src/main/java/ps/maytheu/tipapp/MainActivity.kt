@@ -60,7 +60,7 @@ fun TopMenu(totalPerson: Double = 134.0) {
             .height(150.dp)
 //            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
             .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
-        color = Color(0xFFED7F7),
+        color = Color(0xFFED7F71),
         elevation = 4.dp
     ) {
         Column(
