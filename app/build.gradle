@@ -43,6 +43,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'ps.maytheu.tipapp'
 }
 
 dependencies {
@@ -60,5 +61,5 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
-    implementation "androidx.compose.material:material-icons-extended:1.3.1"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 }

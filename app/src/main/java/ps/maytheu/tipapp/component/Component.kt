@@ -25,7 +25,12 @@ fun InputField(
     modifier: Modifier = Modifier,
     valueOfFieldState: MutableState<String>,
     label: String,
-//    leadingIcon:Icon=
+    leadingIcon: @Composable() (()->Unit) ={
+        Icon(
+            imageVector = Icons.Rounded.AttachMoney,
+            contentDescription = "Monet Icon"
+        )
+    },
     inputEnabled: Boolean,
     isMultipleLine: Boolean,
     keyboardType: KeyboardType = KeyboardType.Number,
@@ -38,12 +43,7 @@ fun InputField(
         value = valueOfFieldState.value,
         onValueChange = { valueOfFieldState.value = it },
         label = { Text(text = label) },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Rounded.AttachMoney,
-                contentDescription = "Monet Icon"
-            )
-        },
+        leadingIcon = leadingIcon,
         singleLine = !isMultipleLine,
         textStyle = TextStyle(fontSize = 20.sp, color = MaterialTheme.colors.onBackground),
         enabled = inputEnabled,
