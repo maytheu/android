@@ -25,7 +25,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             HomeTheme {
                 App {
-                    TopHeader()
+                    Column() {
+                        TopHeader()
+                        InfoArea()
+                    }
                 }
             }
         }
@@ -67,12 +70,25 @@ fun TopHeader() {
     }
 }
 
+@Composable
+fun InfoArea() {
+    androidx.compose.material.Surface(modifier = Modifier.padding(20.dp)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Welcome, A&T")
+            Text(text = "Welcome, A&T")
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     HomeTheme {
         App {
-            TopHeader()
+            Column() {
+                TopHeader()
+                InfoArea()
+            }
         }
     }
 }
