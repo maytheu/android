@@ -6,9 +6,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -83,9 +81,9 @@ fun TopMenu(totalPerson: Double = 134.0) {
 
 @Composable
 fun MainContent() {
-FormField{amount->
-    Log.d("TAG", "MainContent: $amount")
-}
+    FormField { amount ->
+        Log.d("TAG", "MainContent: $amount")
+    }
 
 }
 
@@ -106,7 +104,11 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
 //            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
         elevation = 5.dp, border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.padding(5.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
+        ) {
             InputField(
                 valueOfFieldState = totalBill,
                 label = "Enter Bill",
@@ -120,6 +122,28 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     keyController?.hide()
                 }
             )
+
+            if (validState) {
+                //button menu and info
+                Row(modifier = Modifier.padding(2.dp), horizontalArrangement = Arrangement.Start) {
+                    Text(
+                        text = "Split",
+                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                    )
+
+                    Spacer(modifier = Modifier.size(150.dp))
+
+                    //button menu
+                    Row(
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Text(text="1")
+                    }
+                }
+            } else {
+                Box()
+            }
 
         }
 
