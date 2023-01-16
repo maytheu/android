@@ -60,6 +60,7 @@ fun TopMenu(totalPerson: Double = 134.0) {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .padding(15.dp)
 //            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
             .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
         color = Color(0xFFED7F71),
@@ -103,6 +104,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
     val sliderState = remember {
         mutableStateOf(0f)
     }
+    val range = IntRange(start = 1, endInclusive = 20)
+    TopMenu()
+
     Surface(
         modifier = Modifier
             .padding(3.dp)
@@ -146,7 +150,7 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     horizontalArrangement = Arrangement.End
                 ) {
                     RoundIconButton(imageVector = Icons.Default.Remove, onClick = {
-                        if (numPeople.value === 1) numPeople.value
+                        if (numPeople.value === 1) 1
                         else {
                             numPeople.value = numPeople.value - 1
                         }
@@ -160,7 +164,11 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     )
 
                     RoundIconButton(imageVector = Icons.Default.Add,
-                        onClick = { numPeople.value = numPeople.value + 1 })
+                        onClick = {
+                            if (numPeople.value < range.last) {
+                                numPeople.value = numPeople.value + 1
+                            }
+                        })
                 }
             }
 
@@ -191,10 +199,15 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                Slider(value = sliderState.value, onValueChange = { newVal ->
-                    sliderState.value = newVal
-                    Log.d("TAG Slider", "FormField: $newVal")
-                })
+                Slider(
+                    value = sliderState.value,
+                    onValueChange = { newVal ->
+                        sliderState.value = newVal
+                        Log.d("TAG Slider", "FormField: $newVal")
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    steps = 5,
+                    onValueChangeFinished = { Log.d("TAG finished", "FormField: end") })
             }
 //            } else {
 //                Box {}
