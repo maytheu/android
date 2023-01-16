@@ -1,6 +1,5 @@
 package ps.maytheu.tipapp
 
-import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -13,6 +12,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ps.maytheu.tipapp.component.InputField
 import ps.maytheu.tipapp.ui.theme.TipAppTheme
+import ps.maytheu.tipapp.widgets.RoundIconButton
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,9 +108,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
         elevation = 5.dp, border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
         Column(
-            modifier = Modifier.padding(5.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
+//            modifier = Modifier.padding(5.dp),
+//            horizontalAlignment = Alignment.Start,
+//            verticalArrangement = Arrangement.Top
         ) {
             InputField(
                 valueOfFieldState = totalBill,
@@ -125,29 +128,33 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
 
             if (validState) {
                 //button menu and info
-                Row(modifier = Modifier.padding(2.dp), horizontalArrangement = Arrangement.Start) {
+                Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
                     Text(
                         text = "Split",
                         modifier = Modifier.align(alignment = Alignment.CenterVertically)
                     )
 
-                    Spacer(modifier = Modifier.size(150.dp))
+                    Spacer(modifier = Modifier.width(120.dp))
 
                     //button menu
                     Row(
                         modifier = Modifier.padding(horizontal = 4.dp),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        Text(text="1")
-                    }
-                }
-            } else {
-                Box()
-            }
+                        RoundIconButton(imageVector = Icons.Default.Remove, onClick = { /*TODO*/ })
 
-        }
+                        Text(text = "1")
+
+                        RoundIconButton(imageVector = Icons.Default.Add, onClick = { /*TODO*/ })
+                }
+            }
+        } else {
+        Box {}
+    }
 
     }
+
+}
 }
 
 @Preview(showBackground = true)
