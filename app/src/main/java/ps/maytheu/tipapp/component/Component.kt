@@ -1,5 +1,6 @@
 package ps.maytheu.tipapp.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,7 +36,7 @@ fun InputField(
 ) {
 //show this field
     OutlinedTextField(
-        modifier = modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
+        modifier = modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp).fillMaxWidth(),
         value = valueOfFieldState.value,
         onValueChange = { valueOfFieldState.value = it },
         label = { Text(text = label) },

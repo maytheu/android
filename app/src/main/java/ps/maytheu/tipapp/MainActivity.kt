@@ -98,6 +98,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
         totalBill.value.trim().isNotEmpty()
     }
     val keyController = LocalSoftwareKeyboardController.current
+    val numPeople = remember {
+        mutableStateOf(1)
+    }
     Surface(
         modifier = Modifier
             .padding(3.dp)
@@ -108,9 +111,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
         elevation = 5.dp, border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
         Column(
-//            modifier = Modifier.padding(5.dp),
-//            horizontalAlignment = Alignment.Start,
-//            verticalArrangement = Arrangement.Top
+            modifier = Modifier.padding(5.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
         ) {
             InputField(
                 valueOfFieldState = totalBill,
@@ -141,20 +144,33 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                         modifier = Modifier.padding(horizontal = 4.dp),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        RoundIconButton(imageVector = Icons.Default.Remove, onClick = { /*TODO*/ })
+                        RoundIconButton(
+                            imageVector = Icons.Default.Remove,
+                            onClick = {
+                                if (numPeople.value === 1)  numPeople.value
+                                else {
+                                    numPeople.value = numPeople.value - 1
+                                }                            })
 
-                        Text(text = "1")
+                        Text(
+                            text = numPeople.value.toString(),
+                            modifier = Modifier
+                                .align(alignment = Alignment.CenterVertically)
+                                .padding(horizontal = 9.dp)
+                        )
 
-                        RoundIconButton(imageVector = Icons.Default.Add, onClick = { /*TODO*/ })
+                        RoundIconButton(
+                            imageVector = Icons.Default.Add,
+                            onClick = { numPeople.value = numPeople.value + 1 })
+                    }
                 }
+            } else {
+                Box {}
             }
-        } else {
-        Box {}
-    }
+
+        }
 
     }
-
-}
 }
 
 @Preview(showBackground = true)
