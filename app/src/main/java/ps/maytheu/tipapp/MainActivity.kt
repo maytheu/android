@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -73,9 +74,7 @@ fun TopMenu(totalPerson: Double = 134.0) {
             Text(text = "Total Per Person", style = MaterialTheme.typography.h5)
 
             Text(
-                text = "$$total",
-                style = MaterialTheme.typography.h3,
-                fontWeight = FontWeight.Bold
+                text = "$$total", style = MaterialTheme.typography.h3, fontWeight = FontWeight.Bold
             )
         }
 
@@ -101,6 +100,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
     val numPeople = remember {
         mutableStateOf(1)
     }
+    val sliderState = remember {
+        mutableStateOf(0f)
+    }
     Surface(
         modifier = Modifier
             .padding(3.dp)
@@ -108,15 +110,15 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
 //            .height(450.dp)
 //            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
-        elevation = 5.dp, border = BorderStroke(width = 1.dp, color = Color.LightGray)
+        elevation = 5.dp,
+        border = BorderStroke(width = 1.dp, color = Color.LightGray)
     ) {
         Column(
             modifier = Modifier.padding(5.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            InputField(
-                valueOfFieldState = totalBill,
+            InputField(valueOfFieldState = totalBill,
                 label = "Enter Bill",
                 inputEnabled = true,
                 isMultipleLine = false,
@@ -126,47 +128,77 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     valChanged(totalBill.value.trim())
                     //dismiss keyboard
                     keyController?.hide()
-                }
-            )
+                })
 
-            if (validState) {
-                //button menu and info
-                Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
+//            if (validState) {
+            //button menu and info
+            Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
+                Text(
+                    text = "Split",
+                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                )
+
+                Spacer(modifier = Modifier.width(150.dp))
+
+                //button menu
+                Row(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    RoundIconButton(imageVector = Icons.Default.Remove, onClick = {
+                        if (numPeople.value === 1) numPeople.value
+                        else {
+                            numPeople.value = numPeople.value - 1
+                        }
+                    })
+
                     Text(
-                        text = "Split",
-                        modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                        text = numPeople.value.toString(),
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterVertically)
+                            .padding(horizontal = 9.dp)
                     )
 
-                    Spacer(modifier = Modifier.width(120.dp))
-
-                    //button menu
-                    Row(
-                        modifier = Modifier.padding(horizontal = 4.dp),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        RoundIconButton(
-                            imageVector = Icons.Default.Remove,
-                            onClick = {
-                                if (numPeople.value === 1)  numPeople.value
-                                else {
-                                    numPeople.value = numPeople.value - 1
-                                }                            })
-
-                        Text(
-                            text = numPeople.value.toString(),
-                            modifier = Modifier
-                                .align(alignment = Alignment.CenterVertically)
-                                .padding(horizontal = 9.dp)
-                        )
-
-                        RoundIconButton(
-                            imageVector = Icons.Default.Add,
-                            onClick = { numPeople.value = numPeople.value + 1 })
-                    }
+                    RoundIconButton(imageVector = Icons.Default.Add,
+                        onClick = { numPeople.value = numPeople.value + 1 })
                 }
-            } else {
-                Box {}
             }
+
+            //tip
+            Row(
+                modifier = Modifier.padding(horizontal = 3.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = "Tip",
+                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                )
+
+                Spacer(modifier = Modifier.width(250.dp))
+
+                Text(
+                    text = "$122",
+                    modifier = Modifier.align(alignment = Alignment.CenterVertically)
+                )
+            }
+
+            //slider
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "33%")
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                Slider(value = sliderState.value, onValueChange = { newVal ->
+                    sliderState.value = newVal
+                    Log.d("TAG Slider", "FormField: $newVal")
+                })
+            }
+//            } else {
+//                Box {}
+//            }
 
         }
 
