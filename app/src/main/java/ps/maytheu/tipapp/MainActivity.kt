@@ -252,7 +252,6 @@ fun FormField(
                                 splitBy = splitByPeopleState.value,
                                 tipPercentage = tipPercentage
                             )
-                            Log.d("TAG Slider", "FormField: $newVal")
                         },
                         modifier = modifier.padding(horizontal = 16.dp),
                         steps = 5,
