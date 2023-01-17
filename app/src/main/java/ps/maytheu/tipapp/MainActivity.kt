@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ps.maytheu.tipapp.component.InputField
 import ps.maytheu.tipapp.ui.theme.TipAppTheme
+import ps.maytheu.tipapp.util.calculatePerPerson
 import ps.maytheu.tipapp.util.calculateTip
 import ps.maytheu.tipapp.widgets.RoundIconButton
 
@@ -55,7 +56,7 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun TopMenu(totalPerson: Double = 134.0) {
+fun TopMenu(totalPerson: Double = 0.0) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,6 +110,9 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
     val tipAmountState = remember {
         mutableStateOf(0.0)
     }
+    val totalPerPerson = remember {
+        mutableStateOf(0.0)
+    }
 
     Surface(
         modifier = Modifier
@@ -125,7 +129,7 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            TopMenu()
+            TopMenu(totalPerPerson.value)
 
             InputField(valueOfFieldState = totalBill,
                 label = "Enter Bill",
@@ -135,11 +139,17 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     if (!validState) return@KeyboardActions
                     //get the value
                     valChanged(totalBill.value.trim())
+
+                    totalPerPerson.value = calculatePerPerson(
+                        total = totalBill.value.toDouble(),
+                        splitBy = numPeople.value,
+                        tipPercentage = tipPercentage
+                    )
                     //dismiss keyboard
                     keyController?.hide()
                 })
 
-//            if (validState) {
+            if (validState) {
             //button menu and info
             Row(modifier = Modifier.padding(3.dp), horizontalArrangement = Arrangement.Start) {
                 Text(
@@ -158,6 +168,12 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                         if (numPeople.value === 1) 1
                         else {
                             numPeople.value = numPeople.value - 1
+
+                            totalPerPerson.value = calculatePerPerson(
+                                total = totalBill.value.toDouble(),
+                                splitBy = numPeople.value,
+                                tipPercentage = tipPercentage
+                            )
                         }
                     })
 
@@ -172,6 +188,12 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                         onClick = {
                             if (numPeople.value < range.last) {
                                 numPeople.value = numPeople.value + 1
+
+                                totalPerPerson.value = calculatePerPerson(
+                                    total = totalBill.value.toDouble(),
+                                    splitBy = numPeople.value,
+                                    tipPercentage = tipPercentage
+                                )
                             }
                         })
                 }
@@ -212,15 +234,20 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                             total = totalBill.value.toDouble(),
                             tipPercentage = tipPercentage
                         )
+                        totalPerPerson.value = calculatePerPerson(
+                            total = totalBill.value.toDouble(),
+                            splitBy = numPeople.value,
+                            tipPercentage = tipPercentage
+                        )
                         Log.d("TAG Slider", "FormField: $newVal")
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     steps = 5,
                     onValueChangeFinished = { Log.d("TAG finished", "FormField: end") })
             }
-//            } else {
-//                Box {}
-//            }
+            } else {
+                Box {}
+            }
 
         }
 
