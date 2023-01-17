@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ps.maytheu.tipapp.component.InputField
 import ps.maytheu.tipapp.ui.theme.TipAppTheme
+import ps.maytheu.tipapp.util.calculateTip
 import ps.maytheu.tipapp.widgets.RoundIconButton
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +40,6 @@ class MainActivity : ComponentActivity() {
             TipAppTheme {
                 // A surface container using the 'background' color from the theme
                 MyApp {
-                    //    TopMenu()
                     MainContent()
                 }
             }
@@ -60,7 +60,7 @@ fun TopMenu(totalPerson: Double = 134.0) {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(15.dp)
+            .padding(10.dp)
 //            .clip(shape = CircleShape.copy(all = CornerSize(12.dp))),
             .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
         color = Color(0xFFED7F71),
@@ -104,8 +104,11 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
     val sliderState = remember {
         mutableStateOf(0f)
     }
-    val range = IntRange(start = 1, endInclusive = 20)
-    TopMenu()
+    val tipPercentage = (sliderState.value * 100).toInt()
+    val range = IntRange(start = 1, endInclusive = 100)
+    val tipAmountState = remember {
+        mutableStateOf(0.0)
+    }
 
     Surface(
         modifier = Modifier
@@ -122,6 +125,8 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
+            TopMenu()
+
             InputField(valueOfFieldState = totalBill,
                 label = "Enter Bill",
                 inputEnabled = true,
@@ -185,7 +190,7 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                 Spacer(modifier = Modifier.width(250.dp))
 
                 Text(
-                    text = "$122",
+                    text = "$ ${tipAmountState.value}",
                     modifier = Modifier.align(alignment = Alignment.CenterVertically)
                 )
             }
@@ -195,7 +200,7 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "33%")
+                Text(text = "$tipPercentage %")
 
                 Spacer(modifier = Modifier.height(30.dp))
 
@@ -203,6 +208,10 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
                     value = sliderState.value,
                     onValueChange = { newVal ->
                         sliderState.value = newVal
+                        tipAmountState.value = calculateTip(
+                            total = totalBill.value.toDouble(),
+                            tipPercentage = tipPercentage
+                        )
                         Log.d("TAG Slider", "FormField: $newVal")
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -217,6 +226,7 @@ fun FormField(modifier: Modifier = Modifier, valChanged: (String) -> Unit) {
 
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
