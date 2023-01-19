@@ -1,7 +1,7 @@
 package com.maytheu.movie.navigation
 
 /**
- * defines all screens for the app
+ * defines all screens for the app and the structure our navigation
  */
 enum class MovieScreens {
     HomeScreen,

@@ -9,6 +9,7 @@ import com.maytheu.movie.screens.home.HomeScreen
 
 /**
  * This will create the nav controller and navigation
+ * define the navigation layout
  */
 
 @Composable
