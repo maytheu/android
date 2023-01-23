@@ -10,8 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,80 +28,30 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.home.TopHeader
 import com.example.home.component.InputField
+import com.example.home.navigation.ParrotScreens
+import com.example.home.widgets.login.InfoArea
 
 @Composable
 fun LoginScreen(navController: NavController) {
     Surface(
         modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.background
     ) {
+        val loginId = remember {
+            mutableStateOf("")
+        }
+        val password = remember {
+            mutableStateOf("")
+        }
         Column() {
             TopHeader()
-            InfoArea()
+            InfoArea(loginId, password){
+                //make network request
+                navController.navigate(route = ParrotScreens.HomeScreen.name)
+            }
         }
 
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun InfoArea() {
-    val loginId = remember {
-        mutableStateOf("")
-    }
-    val loginIdValid = remember(loginId.value) {
-        loginId.value.trim().isNotEmpty()
-    }
-    val password = remember {
-        mutableStateOf("")
-    }
-    val passwordValid = remember(password.value) {
-        password.value.trim().isNotEmpty()
-    }
-    val passwordVisibility = remember {
-        mutableStateOf(false)
-    }
-    val keyController = LocalSoftwareKeyboardController.current
-
-    Surface(
-        modifier = Modifier
-            .padding(20.dp)
-            .fillMaxHeight()
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(modifier = Modifier.height(70.dp))
-
-            InputField(
-                modifier = Modifier.fillMaxWidth(),
-                valueOfFieldState = loginId,
-                label = "Login Id",
-                onAction = KeyboardActions {
-                    if (!loginIdValid) return@KeyboardActions
-                    keyController?.hide()
-                })
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            InputField(
-                valueOfFieldState = password,
-                label = "Password",
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisibility.value = !passwordVisibility.value }) {
-                        Icon(
-                            imageVector = if (passwordVisibility.value) Icons.Filled.Visibility else Icons.Default.VisibilityOff,
-                            contentDescription = if (passwordVisibility.value) "Hide password" else "Show password",
-                        )
-                    }
-                },
-                keyboardType = KeyboardType.Password,
-                onAction = KeyboardActions {
-                    if (!passwordValid) return@KeyboardActions
-                    keyController?.hide()
-                },
-                visualTransformation = if (!passwordVisibility.value) PasswordVisualTransformation() else VisualTransformation.None
-            )
-        }
-    }
-}
 
 

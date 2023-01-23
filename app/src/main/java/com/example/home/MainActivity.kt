@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.home.navigation.ParrotNavigation
-import com.example.home.screen.InfoArea
 import com.example.home.ui.theme.HomeTheme
 
 class MainActivity : ComponentActivity() {

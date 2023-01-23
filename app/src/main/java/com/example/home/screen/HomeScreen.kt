@@ -23,16 +23,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.home.component.InputField
+import com.example.home.component.Layout
 
 @Composable
 fun HomeScreen(navController:NavController){
-    Surface(
-        modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.background
-    ) {
-        Column() {
-            Text("Login")
-        }
-
+    Layout(headerText = "User", navController = navController,) {
+        Text(text = "Home sceen")
     }
 }
 
