@@ -11,8 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
 import com.maytheu.movie.model.Movie
 import com.maytheu.movie.model.getMovies
 
@@ -39,8 +43,14 @@ fun MovieRow(movie: Movie = getMovies()[0], onMovieClicked: (String) -> Unit = {
                 shape = RectangleShape,
                 elevation = 5.dp
             ) {
-                Icon(imageVector = Icons.Default.AccountBox, contentDescription = "placeholder")
-
+//                Icon(imageVector = Icons.Default.AccountBox, contentDescription = "placeholder")
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(movie.images[0])
+                        .crossfade(true).transformations(CircleCropTransformation())
+                        .build(),
+                    contentDescription = "${movie.title} poster"
+                )
             }
             Column(modifier = Modifier.padding(5.dp)) {
                 Text(text = movie.title, style = MaterialTheme.typography.h5)
