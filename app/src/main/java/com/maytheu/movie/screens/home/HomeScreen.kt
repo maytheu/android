@@ -18,7 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.maytheu.movie.model.Movie
+import com.maytheu.movie.model.getMovies
 import com.maytheu.movie.navigation.MovieScreens
+import com.maytheu.movie.widgets.home.MovieRow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -35,9 +38,7 @@ fun HomeScreen(navCtrl: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    movies: List<String> = listOf(
-        "Avatar", "Merlin", "Harry Potter", "God not dead", "Tom and Jerry"
-    )
+    movies: List<Movie> = getMovies()
 ) {
     Column(modifier = Modifier.padding(12.dp)) {
         LazyColumn {
@@ -52,32 +53,3 @@ fun MainContent(
     }
 }
 
-@Composable
-fun MovieRow(movie: String, onMovieClicked: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .height(150.dp)
-            .clickable { onMovieClicked(movie) },
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        elevation = 8.dp
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RectangleShape,
-                elevation = 5.dp
-            ) {
-                Icon(imageVector = Icons.Default.AccountBox, contentDescription = "placeholder")
-
-            }
-            Text(text = movie)
-        }
-    }
-}
