@@ -187,3 +187,10 @@ fun getMovies(): List<Movie> {
 
         )
 }
+
+fun getMovie(id: String): Movie {
+   val movie= getMovies().filter { movie ->
+        movie.id == id
+    }
+    return movie[0]
+}
