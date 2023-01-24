@@ -27,7 +27,7 @@ import com.example.home.component.Layout
 
 @Composable
 fun HomeScreen(navController:NavController){
-    Layout(headerText = "User", navController = navController,) {
+    Layout(headerText = "User", navController = navController, back = false) {
         Text(text = "Home sceen")
     }
 }

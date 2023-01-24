@@ -1,6 +1,7 @@
 package com.example.home.component
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -76,22 +78,22 @@ fun Layout(
 ) {
     Scaffold(topBar = {
         TopAppBar(elevation = 5.dp) {
-            Row(horizontalArrangement = Arrangement.Start) {
+            Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
                 if (back) Icon(imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Go back",
                     modifier = Modifier.clickable { navController.popBackStack() })
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-//                AsyncImage(
-//                    model = ImageRequest.Builder(LocalContext.current)
-//                        .data("https://tryeapayshop.s3.us-east-1.amazonaws.com/2e6ba38ab31d7abf57368e801")
-//                        .transformations(CircleCropTransformation())
-//                        .build(),
-//                    contentDescription = "profile pic"
-//                )
+                AsyncImage( modifier= Modifier.padding(vertical = 10.dp),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("https://tryeapayshop.s3.us-east-1.amazonaws.com/3a9127ece77d233b6ba1f7f00.jpeg")
+                        .transformations(CircleCropTransformation())
+                        .build(),
+                    contentDescription = "profile pic"
+                )
 
-                Spacer(modifier = Modifier.width(15.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
                 Text(text = headerText)
             }
