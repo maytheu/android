@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.maytheu.note.screens.NoteScreen
 import com.maytheu.note.ui.theme.NoteTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,22 +23,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    NoteScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     NoteTheme {
-        Greeting("Android")
     }
 }

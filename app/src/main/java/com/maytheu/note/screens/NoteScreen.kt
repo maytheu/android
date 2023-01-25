@@ -6,10 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -19,14 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maytheu.note.R
 import com.maytheu.note.component.Input
+import com.maytheu.note.component.NoteButton
 
 @Preview(showBackground = true)
 @Composable
 fun NoteScreen() {
-    val title by remember {
+    var title by remember {
         mutableStateOf("")
     }
-    val description by remember {
+    var description by remember {
         mutableStateOf("")
     }
     Column(modifier = Modifier.padding(5.dp)) {
@@ -43,9 +41,26 @@ fun NoteScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-           Input(text = title, label = "Title", onTextChange = {})
+            Input(
+                text = title,
+                modifier = Modifier.padding(vertical = 9.dp),
+                label = "Title",
+                onTextChange = {
+                    if (it.any { char ->
+                            char.isLetter() || char.isWhitespace()
+                        }) title = it
+                })
 
-            Input(text = description, label = "Add a note", onTextChange = {})
+            Input(
+                text = description,
+                label = "Add a note",
+                modifier = Modifier.padding(vertical = 9.dp), onTextChange = {
+                    if (it.any { char ->
+                            char.isLetter() || char.isWhitespace()
+                        }) description = it
+                })
+
+            NoteButton(text = "Save", onClick = { /*TODO*/ })
         }
     }
 }
