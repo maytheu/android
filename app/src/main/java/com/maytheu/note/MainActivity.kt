@@ -10,9 +10,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.maytheu.note.data.NoteDataSource
+import com.maytheu.note.model.Note
 import com.maytheu.note.screens.NoteScreen
 import com.maytheu.note.ui.theme.NoteTheme
 
@@ -27,7 +30,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemove = {}, onEdit ={} )
+                    val notes = remember {
+                        mutableStateListOf<Note>()
+                    }
+                    NoteScreen(notes = notes, onAddNote = {
+                        notes.add(it)
+                    }, onRemove = {
+                                  notes.remove(it)
+                    }, onEdit = {})
                 }
             }
         }
@@ -40,6 +50,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     NoteTheme {
-        NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemove = {}, onEdit ={} )
+        NoteScreen(notes = NoteDataSource().loadNotes(), onAddNote = {}, onRemove = {}, onEdit = {})
     }
 }

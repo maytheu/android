@@ -1,13 +1,17 @@
 package com.maytheu.note.screens
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,8 +19,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.maytheu.note.R
 import com.maytheu.note.component.Input
@@ -24,6 +29,7 @@ import com.maytheu.note.component.NoteButton
 import com.maytheu.note.model.Note
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalComposeUiApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
@@ -38,6 +44,9 @@ fun NoteScreen(
     var description by remember {
         mutableStateOf("")
     }
+    val context = LocalContext.current
+    val keyController = LocalSoftwareKeyboardController.current
+
     Column(modifier = Modifier.padding(5.dp)) {
         TopAppBar(title = { Text(text = stringResource(R.string.app_name)) }, actions = {
             Icon(
@@ -73,9 +82,11 @@ fun NoteScreen(
 
             NoteButton(text = "Save", onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty()) {
-
+                    onAddNote(Note(title = title, description = description))
                     title = ""
                     description = ""
+                    keyController?.hide()
+                    Toast.makeText(context, "Note saved", Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -83,14 +94,14 @@ fun NoteScreen(
 
             LazyColumn {
                 items(notes) {
-                    NoteRow(note = it, onNoteDelete = {}, onNoteEdit = {})
+                    NoteRow(note = it, onNoteDelete = { onRemove(it) }, onNoteEdit = { onEdit(it) })
                 }
             }
         }
     }
 }
 
-
+//all action implemented in the main form
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteRow(
@@ -106,9 +117,11 @@ fun NoteRow(
             .fillMaxWidth(),
         color = Color(0xFFDFE6E8), elevation = 5.dp
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically){
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Column(
-                modifier.padding(horizontal = 10.dp, vertical = 5.dp).width(280.dp),
+                modifier
+                    .padding(horizontal = 15.dp, vertical = 5.dp)
+                    .width(280.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(text = note.title, style = MaterialTheme.typography.subtitle2)
@@ -119,8 +132,18 @@ fun NoteRow(
                 )
             }
 
-            Text(text = "edit")
-            Text(text = "edit2")
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = "Edit note",
+                modifier.clickable { onNoteDelete(note) })
+
+
+            Spacer(modifier = modifier.width(10.dp))
+
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = "Delete note",
+                modifier.clickable { onNoteDelete(note) })
         }
 
     }
