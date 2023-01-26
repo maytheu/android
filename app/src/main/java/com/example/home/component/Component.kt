@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -37,7 +38,7 @@ fun InputField(
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
 //show this field
     TextField(
@@ -50,7 +51,9 @@ fun InputField(
         textStyle = TextStyle(fontSize = 20.sp, color = MaterialTheme.colors.onBackground),
         enabled = inputEnabled,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
-        keyboardActions = onAction, visualTransformation = visualTransformation
+        keyboardActions = onAction,
+        visualTransformation = visualTransformation,
+        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
     )
 }
 
@@ -58,9 +61,9 @@ fun InputField(
 fun ButtonField(
     modifier: Modifier = Modifier,
     enabled: Boolean = false,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    colors: ButtonColors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1E2AE3)),
     action: () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     Button(
         onClick = action, enabled = enabled, modifier = modifier,
@@ -74,18 +77,22 @@ fun Layout(
     headerText: String,
     back: Boolean = true,
     navController: NavController,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Scaffold(topBar = {
         TopAppBar(elevation = 5.dp) {
-            Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 if (back) Icon(imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Go back",
                     modifier = Modifier.clickable { navController.popBackStack() })
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-                AsyncImage( modifier= Modifier.padding(vertical = 10.dp),
+                AsyncImage(
+                    modifier = Modifier.padding(vertical = 10.dp),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data("https://tryeapayshop.s3.us-east-1.amazonaws.com/3a9127ece77d233b6ba1f7f00.jpeg")
                         .transformations(CircleCropTransformation())
