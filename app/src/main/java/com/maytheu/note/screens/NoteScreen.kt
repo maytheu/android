@@ -37,12 +37,13 @@ fun NoteScreen(
     onAddNote: (Note) -> Unit,
     onRemove: (Note) -> Unit,
     onEdit: (Note) -> Unit,
+    note: Note,
 ) {
     var title by remember {
-        mutableStateOf("")
+        mutableStateOf(note.title)
     }
     var description by remember {
-        mutableStateOf("")
+        mutableStateOf(note.description)
     }
     val context = LocalContext.current
     val keyController = LocalSoftwareKeyboardController.current
@@ -50,19 +51,16 @@ fun NoteScreen(
     Column(modifier = Modifier.padding(5.dp)) {
         TopAppBar(title = { Text(text = stringResource(R.string.app_name)) }, actions = {
             Icon(
-                imageVector = Icons.Rounded.Notifications,
-                contentDescription = "placeholder"
+                imageVector = Icons.Rounded.Notifications, contentDescription = "placeholder"
             )
         }, backgroundColor = Color(0XFFDADFE3))
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
         ) {
-            Input(
-                text = title,
+            Input(text = title,
                 modifier = Modifier.padding(vertical = 9.dp),
                 label = "Title",
                 onTextChange = {
@@ -71,10 +69,10 @@ fun NoteScreen(
                         }) title = it
                 })
 
-            Input(
-                text = description,
+            Input(text = description,
                 label = "Add a note",
-                modifier = Modifier.padding(vertical = 9.dp), onTextChange = {
+                modifier = Modifier.padding(vertical = 9.dp),
+                onTextChange = {
                     if (it.any { char ->
                             char.isLetter() || char.isWhitespace()
                         }) description = it
@@ -114,8 +112,7 @@ fun NoteRow(
         modifier
             .padding(5.dp)
             .clip(RoundedCornerShape(topEnd = 40.dp, bottomStart = 40.dp))
-            .fillMaxWidth(),
-        color = Color(0xFFDFE6E8), elevation = 5.dp
+            .fillMaxWidth(), color = Color(0xFFDFE6E8), elevation = 5.dp
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(
@@ -132,16 +129,14 @@ fun NoteRow(
                 )
             }
 
-            Icon(
-                imageVector = Icons.Outlined.Edit,
+            Icon(imageVector = Icons.Outlined.Edit,
                 contentDescription = "Edit note",
-                modifier.clickable { onNoteDelete(note) })
+                modifier.clickable { onNoteEdit(note) })
 
 
             Spacer(modifier = modifier.width(10.dp))
 
-            Icon(
-                imageVector = Icons.Outlined.Delete,
+            Icon(imageVector = Icons.Outlined.Delete,
                 contentDescription = "Delete note",
                 modifier.clickable { onNoteDelete(note) })
         }
