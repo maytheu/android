@@ -19,7 +19,9 @@ import com.maytheu.note.model.Note
 import com.maytheu.note.screens.NoteScreen
 import com.maytheu.note.ui.theme.NoteTheme
 import com.maytheu.note.viewModel.NoteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
