@@ -11,7 +11,7 @@ import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "notes_tbl")
-data class Note @RequiresApi(Build.VERSION_CODES.O) constructor(
+data class Note (
     @PrimaryKey(false)
     val id: UUID = UUID.randomUUID(),
 

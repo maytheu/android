@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.maytheu.note"
-        minSdk 24
+        minSdk 29
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -29,8 +29,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -73,9 +73,9 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2"
 }
 
 kapt {

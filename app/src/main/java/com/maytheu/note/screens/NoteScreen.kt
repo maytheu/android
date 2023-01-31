@@ -30,20 +30,19 @@ import com.maytheu.note.model.Note
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalComposeUiApi::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
     notes: List<Note>,
     onAddNote: (Note) -> Unit,
     onRemove: (Note) -> Unit,
-    onEdit: (Note) -> Unit,
-    note: Note,
+//    onEdit: (Note) -> Unit,
+//    note: Note,
 ) {
     var title by remember {
-        mutableStateOf(note.title)
+        mutableStateOf("")
     }
     var description by remember {
-        mutableStateOf(note.description)
+        mutableStateOf("")
     }
     val context = LocalContext.current
     val keyController = LocalSoftwareKeyboardController.current
@@ -92,7 +91,9 @@ fun NoteScreen(
 
             LazyColumn {
                 items(notes) {
-                    NoteRow(note = it, onNoteDelete = { onRemove(it) }, onNoteEdit = { onEdit(it) })
+                    NoteRow(note = it, onNoteDelete = { onRemove(it) },
+//                        onNoteEdit = { onEdit(it) }
+                    )
                 }
             }
         }
@@ -106,7 +107,7 @@ fun NoteRow(
     note: Note,
     modifier: Modifier = Modifier,
     onNoteDelete: (Note) -> Unit,
-    onNoteEdit: (Note) -> Unit,
+    onNoteEdit: (Note) -> Unit={},
 ) {
     Surface(
         modifier
@@ -123,15 +124,15 @@ fun NoteRow(
             ) {
                 Text(text = note.title, style = MaterialTheme.typography.subtitle2)
                 Text(text = note.description, style = MaterialTheme.typography.subtitle1)
-                Text(
-                    text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
-                    style = MaterialTheme.typography.caption
-                )
+//                Text(
+//                    text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
+//                    style = MaterialTheme.typography.caption
+//                )
             }
 
-            Icon(imageVector = Icons.Outlined.Edit,
-                contentDescription = "Edit note",
-                modifier.clickable { onNoteEdit(note) })
+//            Icon(imageVector = Icons.Outlined.Edit,
+//                contentDescription = "Edit note",
+//                modifier.clickable { onNoteEdit(note) })
 
 
             Spacer(modifier = modifier.width(10.dp))

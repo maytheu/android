@@ -45,17 +45,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NoteApp(noteViewModel: NoteViewModel = viewModel()) {
     val noteList = noteViewModel.getAllNote()
-    var editNote by remember {
-        mutableStateOf(Note(title = "", description = ""))
-    }
+//    var editNote by remember {
+//        mutableStateOf(Note(title = "", description = ""))
+//    }
 
     NoteScreen(notes = noteList, onAddNote = {
         noteViewModel.addNote(it)
     }, onRemove = {
         noteViewModel.removeNote(it)
-    }, onEdit = {
-        editNote = noteViewModel.editNote(it)
-    }, editNote
+    },
+//        onEdit = {
+//        editNote = noteViewModel.editNote(it)
+//    }, editNote
     )
 }
 

@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import com.maytheu.note.data.NoteDataSource
 import com.maytheu.note.model.Note
 
-@RequiresApi(Build.VERSION_CODES.O)
 class NoteViewModel : ViewModel() {
     var noteList = mutableStateListOf<Note>()
 
@@ -26,7 +25,7 @@ class NoteViewModel : ViewModel() {
 
     fun editNote(note: Note): Note {
         Log.d("TAG", "editNote: $note")
-        return note
+        return note 
     }
 
     fun getAllNote():List<Note>{
