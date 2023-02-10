@@ -38,11 +38,11 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
 //        noteList.addAll(NoteDataSource().loadNotes())
     }
 
-    suspend fun addNote(note: Note) = viewModelScope.launch { noteRepository.addNote(note) }
+     fun addNote(note: Note) = viewModelScope.launch { noteRepository.addNote(note) }
 
-    suspend fun editNote(note: Note) = viewModelScope.launch { noteRepository.updateNote(note) }
+     fun editNote(note: Note) = viewModelScope.launch { noteRepository.updateNote(note) }
 
-    suspend fun removeNote(note: Note) = viewModelScope.launch { noteRepository.deleteNote(note) }
+     fun removeNote(note: Note) = viewModelScope.launch { noteRepository.deleteNote(note) }
 
 
 //    fun removeNote(note: Note) {

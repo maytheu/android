@@ -43,8 +43,8 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NoteApp(noteViewModel: NoteViewModel = viewModel()) {
-    val noteList = noteViewModel.getAllNote()
+fun NoteApp(noteViewModel: NoteViewModel) {
+    val noteList = noteViewModel.noteList.collectAsState().value
 //    var editNote by remember {
 //        mutableStateOf(Note(title = "", description = ""))
 //    }
