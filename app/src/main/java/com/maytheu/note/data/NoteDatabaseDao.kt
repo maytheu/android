@@ -19,7 +19,7 @@ interface NoteDatabaseDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(note: Note)
 
-    @Query("DELETE * FROM notes_tbl")
+    @Query("DELETE FROM notes_tbl")
     suspend fun deleteAll()
 
     @Delete

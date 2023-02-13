@@ -11,12 +11,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object AppModule {
     @Singleton
     @Provides
-    fun provideNoteDao(noteDatabase: NoteDatabase): NoteDatabaseDao = noteDatabase.NoteDao()
+    fun provideNoteDao(noteDatabase: NoteDatabase): NoteDatabaseDao = noteDatabase.noteDao()
 
     @Singleton
     @Provides
@@ -25,4 +25,5 @@ object AppModule {
             context, NoteDatabase::class.java,
             "notes_db"
         ).fallbackToDestructiveMigration().build()
+
 }

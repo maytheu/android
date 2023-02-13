@@ -14,7 +14,7 @@ class NoteRepository @Inject constructor(private val noteDatabaseDao: NoteDataba
 
     suspend fun updateNote(note: Note) = noteDatabaseDao.update(note)
 
-    fun allNotes():Flow<List<Note>> = noteDatabaseDao.getNotes().flowOn(Dispatchers.IO).conflate()
+    fun allNotes(): Flow<List<Note>> = noteDatabaseDao.getNotes().flowOn(Dispatchers.IO).conflate()
 
     suspend fun getNote(id: String) = noteDatabaseDao.getNote(id)
 

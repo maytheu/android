@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    val noteViewModel: NoteViewModel by viewModels()
+                    val noteViewModel = viewModel<NoteViewModel>()
                     NoteApp(noteViewModel)
 
                 }
@@ -49,11 +49,10 @@ fun NoteApp(noteViewModel: NoteViewModel) {
 //        mutableStateOf(Note(title = "", description = ""))
 //    }
 
-    NoteScreen(notes = noteList, onAddNote = {
-        noteViewModel.addNote(it)
-    }, onRemove = {
-        noteViewModel.removeNote(it)
-    },
+    NoteScreen(
+        notes = noteList,
+        onAddNote = { noteViewModel.addNote(it) },
+        onRemove = { noteViewModel.removeNote(it) },
 //        onEdit = {
 //        editNote = noteViewModel.editNote(it)
 //    }, editNote
