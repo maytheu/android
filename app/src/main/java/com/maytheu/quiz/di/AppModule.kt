@@ -1,5 +1,6 @@
 package com.maytheu.quiz.di
 
+import com.maytheu.quiz.repository.QuizRepository
 import com.maytheu.quiz.service.QuestionApi
 import com.maytheu.quiz.util.Constants
 import dagger.Module
@@ -22,4 +23,8 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(QuestionApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideQuestionRepository(questionApi: QuestionApi) = QuizRepository(questionApi)
 }
