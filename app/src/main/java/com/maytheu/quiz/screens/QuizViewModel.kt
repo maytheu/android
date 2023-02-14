@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuizViewModel @Inject constructor(private val quizRepository: QuizRepository) : ViewModel() {
-    private val data: MutableState<DataOrException<ArrayList<QuestionItem>, Boolean, Exception>> =
+     val data: MutableState<DataOrException<ArrayList<QuestionItem>, Boolean, Exception>> =
         mutableStateOf(
             DataOrException(null, true, Exception(""))
         )
