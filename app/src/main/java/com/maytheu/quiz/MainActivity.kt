@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.maytheu.quiz.screens.QuizHome
 import com.maytheu.quiz.screens.QuizViewModel
 import com.maytheu.quiz.ui.theme.QuizTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,19 +36,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun QuizHome(quizViewModel: QuizViewModel = hiltViewModel()) {
-    Questions(quizViewModel)
-}
 
-@Composable
-fun Questions(quizViewModel: QuizViewModel) {
-    val questions = quizViewModel.data.value.data?.toMutableList()
-    if(quizViewModel.data.value.loading == true) Log.d("TAG", "Questions: Loading")
-    Log.d("TAG", "Questions: ${questions?.size}")
-    Text(text = "here ${questions?.size}")
 
-}
 
 @Preview(showBackground = true)
 @Composable
