@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -100,7 +101,7 @@ fun QuestionDisplay(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
-            QuestionTracker(questionIndex.value, total = )
+            QuestionTracker(questionIndex.value)
             DrawDoted(pathEffect = pathEffect)
 
             //question
@@ -200,6 +201,54 @@ fun QuestionDisplay(
             }
         }
 
+    }
+}
+
+@Preview
+@Composable
+fun QuestionProgress(score: Int = 12) {
+    val gradient = Brush.linearGradient(listOf(Color(0xFFF95075), Color(0xFFBE6BE5)))
+    Row(
+        modifier = Modifier
+            .padding(5.dp)
+            .fillMaxWidth()
+            .height(45.dp)
+            .border(
+                width = 5.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        AppColor.mLightPurple,
+                        AppColor.mLightPurple
+                    )
+                ),
+                shape = RoundedCornerShape(40.dp)
+            )
+            .clip(
+                RoundedCornerShape(
+                    topStartPercent = 50,
+                    topEndPercent = 50,
+                    bottomStartPercent = 50,
+                    bottomEndPercent = 50
+                )
+            )
+            .background(Color.Transparent),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = { },
+            contentPadding = PaddingValues(1.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(brush = gradient),
+            enabled = false,
+            elevation = null,
+            colors = buttonColors(
+                backgroundColor = Color.Transparent,
+                disabledBackgroundColor = Color.Transparent
+            )
+        ) {
+
+        }
     }
 }
 
