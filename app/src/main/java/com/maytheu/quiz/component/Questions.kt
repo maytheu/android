@@ -23,6 +23,7 @@ import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,7 +102,8 @@ fun QuestionDisplay(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
-            QuestionTracker(questionIndex.value)
+            if (questionIndex.value >= 3) QuestionProgress(questionIndex.value)
+            QuestionTracker(questionIndex.value, total = quizViewModel.getTotalQuestions())
             DrawDoted(pathEffect = pathEffect)
 
             //question
@@ -208,10 +210,13 @@ fun QuestionDisplay(
 @Composable
 fun QuestionProgress(score: Int = 12) {
     val gradient = Brush.linearGradient(listOf(Color(0xFFF95075), Color(0xFFBE6BE5)))
+    val progressFactor = remember(score) {
+        mutableStateOf(score * 0.005f)
+    }
     Row(
         modifier = Modifier
             .padding(5.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(progressFactor.value)
             .height(45.dp)
             .border(
                 width = 5.dp,
@@ -247,7 +252,16 @@ fun QuestionProgress(score: Int = 12) {
                 disabledBackgroundColor = Color.Transparent
             )
         ) {
-
+            Text(
+                text = (score * 10).toString(),
+                modifier = Modifier
+                    .clip(shape = RoundedCornerShape(20.dp))
+                    .fillMaxHeight(0.90f)
+                    .fillMaxWidth()
+                    .padding(6.dp),
+                color = AppColor.mOffWhite,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

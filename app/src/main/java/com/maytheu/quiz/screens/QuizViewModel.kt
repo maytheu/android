@@ -29,4 +29,8 @@ class QuizViewModel @Inject constructor(private val quizRepository: QuizReposito
             if (data.value.data.toString().isNotEmpty()) data.value.loading = false
         }
     }
+
+    fun getTotalQuestions():Int{
+        return data.value.data?.toMutableList()?.size!!
+    }
 }
