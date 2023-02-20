@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     Greeting("Android")
+                    //https://api.openweathermap.org/data/2.5/weather?
                 }
             }
         }
