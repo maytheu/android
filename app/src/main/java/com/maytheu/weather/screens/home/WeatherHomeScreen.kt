@@ -2,15 +2,23 @@ package com.maytheu.weather.screens
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.maytheu.weather.data.DataOrException
 import com.maytheu.weather.model.Weather
 import com.maytheu.weather.screens.home.WeatherHomeViewModel
@@ -36,11 +44,10 @@ fun WeatherHomeScreen(navController: NavController, homeViewModel: WeatherHomeVi
 fun WeatherData(data: Weather, navController: NavController) {
     Scaffold(topBar = {
         WeatherAppBar(
-            title = "${data.city.name}, ${data.city.country }",
+            title = "${data.city.name}, ${data.city.country}",
             elevation = 5.dp,
-            isMainScreen = false,
+            isMainScreen = true,
             navController = navController,
-//            icon = Icons.Default.ArrowBack
         )
     }) {
         WeatherContent(data = data)
@@ -49,7 +56,56 @@ fun WeatherData(data: Weather, navController: NavController) {
 
 @Composable
 fun WeatherContent(data: Weather) {
-    Text(text = data.city.name)
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Mar 1", style = MaterialTheme.typography.caption,
+            color = MaterialTheme.colors.onSecondary, modifier = Modifier.padding(5.dp)
+        )
+
+        //main icon
+        Surface(
+            modifier = Modifier
+                .padding(5.dp)
+                .size(200.dp),
+            shape = CircleShape,
+            color = Color(0xFFFFC400)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                WeatherImageIcon(code = data.list[0].weather[0].icon)
+                Text(
+                    text = "55",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    text = "Cloudy",
+                    fontStyle = FontStyle.Italic
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun WeatherImageIcon(code: String) {
+    val imageUrl = "https://openweathermap.org/img/wn/$code.png"
+
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl).build(), contentDescription = "icon",
+        modifier = Modifier.size(80.dp)
+    )
+
 }
 
 
