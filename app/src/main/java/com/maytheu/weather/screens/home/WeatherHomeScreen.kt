@@ -1,12 +1,9 @@
 package com.maytheu.weather.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -22,6 +19,8 @@ import coil.request.ImageRequest
 import com.maytheu.weather.data.DataOrException
 import com.maytheu.weather.model.Weather
 import com.maytheu.weather.screens.home.WeatherHomeViewModel
+import com.maytheu.weather.utils.formatDate
+import com.maytheu.weather.utils.formatDecimals
 import com.maytheu.weather.widgets.WeatherAppBar
 
 @Composable
@@ -29,7 +28,7 @@ fun WeatherHomeScreen(navController: NavController, homeViewModel: WeatherHomeVi
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = homeViewModel.getWeather(city = "lagos")
+        value = homeViewModel.getWeather(city = "mumbai")
     }.value
 
     if (weatherData.loading == true) {
@@ -56,7 +55,7 @@ fun WeatherData(data: Weather, navController: NavController) {
 
 @Composable
 fun WeatherContent(data: Weather) {
-
+    var weatherList = data.list[0]
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,7 +64,7 @@ fun WeatherContent(data: Weather) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Mar 1", style = MaterialTheme.typography.caption,
+            text = formatDate(weatherList.dt), style = MaterialTheme.typography.caption,
             color = MaterialTheme.colors.onSecondary, modifier = Modifier.padding(5.dp)
         )
 
@@ -81,14 +80,14 @@ fun WeatherContent(data: Weather) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WeatherImageIcon(code = data.list[0].weather[0].icon)
+                WeatherImageIcon(code = weatherList.weather[0].icon)
                 Text(
-                    text = "55",
+                    text = formatDecimals(weatherList.main.temp) + "°",
                     style = MaterialTheme.typography.h4,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    text = "Cloudy",
+                    text = weatherList.weather[0].main,
                     fontStyle = FontStyle.Italic
                 )
             }
