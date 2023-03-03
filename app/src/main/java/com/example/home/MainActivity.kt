@@ -39,16 +39,3 @@ fun App(content: @Composable () -> Unit) {
 
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    HomeTheme {
-//        App {
-//            Column() {
-//                TopHeader()
-//                InfoArea()
-//            }
-//        }
-//    }
-//}

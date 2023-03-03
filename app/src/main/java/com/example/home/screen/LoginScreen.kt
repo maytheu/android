@@ -43,7 +43,8 @@ fun LoginScreen(navController: NavController) {
             mutableStateOf("")
         }
         Column() {
-            ImageScreen(350.dp)
+            ImageScreen(300.dp)
+
             InfoArea(loginId, password){
                 //make network request
                 navController.navigate(route = ParrotScreens.HomeScreen.name)

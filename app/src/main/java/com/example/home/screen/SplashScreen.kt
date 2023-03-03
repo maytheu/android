@@ -38,8 +38,10 @@ fun SplashScreen(navController: NavController) {
     })
 
     Surface(color = Color(0xFF1E2AE3)) {
-        Surface(modifier = Modifier
-            .scale(scale.value), ) {
+        Surface(
+            modifier = Modifier
+                .scale(scale.value), color = Color(0xFF1E2AE3)
+        ) {
             ImageScreen(0.dp)
 
         }
