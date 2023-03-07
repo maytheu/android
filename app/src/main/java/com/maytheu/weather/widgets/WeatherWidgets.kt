@@ -37,20 +37,7 @@ import com.maytheu.weather.utils.formatDate
 import com.maytheu.weather.utils.formatDateTime
 import com.maytheu.weather.utils.formatDecimals
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun WeatherData(data: Weather, navController: NavController) {
-    Scaffold(topBar = {
-        WeatherAppBar(
-            title = "${data.city.name}, ${data.city.country}",
-            elevation = 5.dp,
-            isMainScreen = true,
-            navController = navController,
-        )
-    }) {
-        WeatherContent(data = data)
-    }
-}
+
 
 @Composable
 fun WeatherContent(data: Weather) {
@@ -99,7 +86,7 @@ fun WeatherContent(data: Weather) {
 //        SunsetSunrise(data = weatherList)
 
         Text(
-            text = "Next Three Hours",
+            text = "Forecast in view",
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.h5,
             modifier = Modifier.padding(top = 7.dp, bottom = 7.dp)
