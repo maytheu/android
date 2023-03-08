@@ -1,9 +1,8 @@
 package com.maytheu.weather.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import android.util.Log
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.maytheu.weather.navigation.WeatherScreens
 import com.maytheu.weather.widgets.WeatherAppBar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -39,12 +39,19 @@ fun WeatherSearchScreen(navController: NavController) {
             navController.popBackStack()
         }
     }) {
-        Surface() {
+        Surface {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SearchField()
+                SearchField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    navController.navigate(WeatherScreens.HomeScreen.name + "/" + it)
+                }
 
             }
         }
@@ -53,19 +60,23 @@ fun WeatherSearchScreen(navController: NavController) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchField(onSearch: (String) -> Unit = {}) {
+fun SearchField(modifier: Modifier = Modifier, onSearch: (String) -> Unit = {}) {
     val searchQueryState = rememberSaveable {
         mutableStateOf<String>("")
     }
     val keyboardCtrler = LocalSoftwareKeyboardController.current
     val validState = remember(searchQueryState.value) {
-        searchQueryState.value.trim().isNotBlank()
+        searchQueryState.value.trim().isNotEmpty()
     }
     Column {
-        CommonTextField(valueState = searchQueryState,
+        CommonTextField(modifier = modifier,
+            valueState = searchQueryState,
             placeholder = "Lagos",
             onAction = KeyboardActions {
-//        if()
+                if (!validState) return@KeyboardActions
+                onSearch(searchQueryState.value.trim())
+                searchQueryState.value = ""
+                keyboardCtrler?.hide()
             })
     }
 }
@@ -76,9 +87,10 @@ fun CommonTextField(
     placeholder: String,
     onAction: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
-    imeActions: ImeAction = ImeAction.Next,
+    imeActions: ImeAction = ImeAction.Next, modifier: Modifier = Modifier,
 ) {
-    OutlinedTextField(value = valueState.value,
+    OutlinedTextField(
+        value = valueState.value,
         onValueChange = { valueState.value = it },
         label = { Text(placeholder) },
         maxLines = 1,
@@ -89,6 +101,6 @@ fun CommonTextField(
             focusedBorderColor = Color.Blue, cursorColor = Color.Black
         ),
         shape = RoundedCornerShape(20.dp),
-        modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+        modifier = modifier.padding(start = 10.dp, end = 10.dp)
     )
 }

@@ -17,11 +17,16 @@ import com.maytheu.weather.widgets.WeatherAppBar
 import com.maytheu.weather.widgets.WeatherContent
 
 @Composable
-fun WeatherHomeScreen(navController: NavController, homeViewModel: WeatherHomeViewModel) {
+fun WeatherHomeScreen(
+    navController: NavController,
+    homeViewModel: WeatherHomeViewModel,
+    city: String?
+) {
+    Log.d("TAG", "WeatherHomeScreen: $city")
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = homeViewModel.getWeather(city = "ibadan")
+        value = homeViewModel.getWeather(city = city.toString())
     }.value
 
     if (weatherData.loading == true) {

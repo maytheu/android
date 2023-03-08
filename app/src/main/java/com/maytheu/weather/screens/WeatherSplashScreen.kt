@@ -42,7 +42,7 @@ fun WeatherSplashScreen(navController: NavController) {
             }
         ))
         delay(2000L)
-        navController.navigate(WeatherScreens.HomeScreen.name)
+        navController.navigate(WeatherScreens.HomeScreen.name + "/lagos")
     })
 
     Surface(
