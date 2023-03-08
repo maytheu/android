@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun WeatherAboutScreen(navController: NavController){
-    Text(text = "About screen")
+fun WeatherFavouritesScreen(navController: NavController) {
+    Text(text = "Favourites screen")
 }

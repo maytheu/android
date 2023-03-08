@@ -7,9 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.maytheu.weather.screens.WeatherHomeScreen
-import com.maytheu.weather.screens.WeatherSearchScreen
-import com.maytheu.weather.screens.WeatherSplashScreen
+import com.maytheu.weather.screens.*
 import com.maytheu.weather.screens.home.WeatherHomeViewModel
 
 @Composable
@@ -34,6 +32,18 @@ fun WeatherNavigation() {
 
         composable(WeatherScreens.SearchScreen.name) {
             WeatherSearchScreen(navController = navController)
+        }
+
+        composable(WeatherScreens.AboutScreen.name) {
+            WeatherAboutScreen(navController = navController)
+        }
+
+        composable(WeatherScreens.SettingScreen.name) {
+            WeatherSettingsScreen(navController = navController)
+        }
+
+        composable(WeatherScreens.FavouriteScreen.name) {
+            WeatherFavouritesScreen(navController = navController)
         }
     }
 }
