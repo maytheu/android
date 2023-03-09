@@ -1,6 +1,8 @@
 package com.maytheu.weather.screens.favourites
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maytheu.weather.model.Favourites
@@ -19,6 +21,7 @@ class WeatherFavouritesViewModel @Inject constructor(private val weatherDBRepo: 
     ViewModel() {
     private val _favouritesCity = MutableStateFlow<List<Favourites>>(emptyList())
     val favouritesCity = _favouritesCity.asStateFlow()
+    var checkFavouriteCity = mutableStateOf<Boolean>(false)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,13 +39,21 @@ class WeatherFavouritesViewModel @Inject constructor(private val weatherDBRepo: 
 
     fun addFavouriteCity(favourite: Favourites) = viewModelScope.launch {
         weatherDBRepo.newFavouriteCity(favourite)
+        getFavouriteCity(favourite.city)
     }
 
     fun deleteFavouriteCity(favourite: Favourites) = viewModelScope.launch {
         weatherDBRepo.removeFavouriteCity(favourite)
+        getFavouriteCity(favourite.city)
     }
 
     fun deleteAllFavouriteCity() = viewModelScope.launch {
         weatherDBRepo.deleteAllFavouriteCity()
+    }
+
+    fun getFavouriteCity(city: String) = viewModelScope.launch {
+        val favCity = weatherDBRepo.getFavoriteCity(city = city)
+        checkFavouriteCity.value = favCity != null
+
     }
 }

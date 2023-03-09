@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.text.*
@@ -45,6 +47,7 @@ fun WeatherData(data: Weather, navController: NavController) {
             elevation = 5.dp,
             isMainScreen = true,
             navController = navController,
+//            icon = Icons.Default.FavoriteBorder,
             onAddActionClicked = {
                 navController.navigate(WeatherScreens.SearchScreen.name)
             }

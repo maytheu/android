@@ -6,14 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -22,8 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.maytheu.weather.model.Favourites
 import com.maytheu.weather.navigation.WeatherScreens
+import com.maytheu.weather.screens.favourites.WeatherFavouritesViewModel
 
 @Composable
 fun WeatherAppBar(
@@ -32,6 +33,7 @@ fun WeatherAppBar(
     isMainScreen: Boolean = true,
     elevation: Dp = 0.dp,
     navController: NavController,
+    weatherFavouritesViewModel: WeatherFavouritesViewModel = hiltViewModel(),
     onAddActionClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {},
 ) {
@@ -42,6 +44,9 @@ fun WeatherAppBar(
     if (showDialog.value) {
         ShowMenuDialog(showDialog = showDialog, navController = navController)
     }
+
+    val city = title.split(",")
+    weatherFavouritesViewModel.getFavouriteCity(city = city[0])
 
     TopAppBar(
         title = {
@@ -73,6 +78,35 @@ fun WeatherAppBar(
                     modifier = Modifier.clickable {
                         onButtonClicked.invoke()
                     }
+                )
+            }
+            if (isMainScreen) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "favourite",
+                    tint = if (weatherFavouritesViewModel.checkFavouriteCity.value) Color.Red.copy(
+                        alpha = 0.9f
+                    ) else Color.LightGray,
+                    modifier =
+                    Modifier
+                        .scale(0.9f)
+                        .clickable {
+                            if (!weatherFavouritesViewModel.checkFavouriteCity.value) {
+                                weatherFavouritesViewModel.addFavouriteCity(
+                                    Favourites(
+                                        city = city[0],
+                                        country = city[1]
+                                    )
+                                )
+                            } else {
+                                weatherFavouritesViewModel.deleteFavouriteCity(
+                                    Favourites(
+                                        city = city[0],
+                                        country = city[1]
+                                    )
+                                )
+                            }
+                        }
                 )
             }
         },
