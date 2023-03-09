@@ -14,5 +14,7 @@ class WeatherDBRepo @Inject constructor(private val weatherDao: WeatherDao) {
     suspend fun removeFavouriteCity(favourite: Favourites) =
         weatherDao.removeFavouriteCity(favourite)
 
+    suspend fun deleteAllFavouriteCity() = weatherDao.deleteAllFavouriteCity()
+
     suspend fun getFavoriteCity(city: String): Favourites = weatherDao.getFavoriteCity(city)
 }
