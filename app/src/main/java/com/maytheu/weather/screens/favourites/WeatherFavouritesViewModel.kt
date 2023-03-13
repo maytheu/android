@@ -2,6 +2,7 @@ package com.maytheu.weather.screens.favourites
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,6 +55,10 @@ class WeatherFavouritesViewModel @Inject constructor(private val weatherDBRepo: 
     fun getFavouriteCity(city: String) = viewModelScope.launch {
         val favCity = weatherDBRepo.getFavoriteCity(city = city)
         checkFavouriteCity.value = favCity != null
+
+//        val checkFavCity = favouritesCity.collectAsState().value.filter { item ->
+//            item.city === city
+//        }
 
     }
 }
