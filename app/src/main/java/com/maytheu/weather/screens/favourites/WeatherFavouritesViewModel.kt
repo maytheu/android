@@ -31,7 +31,6 @@ class WeatherFavouritesViewModel @Inject constructor(private val weatherDBRepo: 
                     Log.d("TAG", "empty: ")
                 } else {
                     _favouritesCity.value = favourites
-                    Log.d("TAG", "$favouritesCity: ")
                 }
 
             }

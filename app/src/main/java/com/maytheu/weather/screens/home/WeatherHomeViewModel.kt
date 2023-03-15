@@ -38,7 +38,10 @@ class WeatherHomeViewModel @Inject constructor(private val weatherRepo: WeatherR
 //        Log.d("TAG", "getWeather: ${data.value.data.toString()}")
 //    }
 
-    suspend fun getWeather(city:String):DataOrException<Weather, Boolean, Exception>{
-        return  weatherRepo.getWeatherForecast(city)
+    suspend fun getWeather(
+        city: String,
+        unit: String,
+    ): DataOrException<Weather, Boolean, Exception> {
+        return weatherRepo.getWeatherForecast(city, unit)
     }
 }
