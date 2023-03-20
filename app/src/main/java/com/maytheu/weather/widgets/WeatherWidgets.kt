@@ -1,6 +1,5 @@
 package com.maytheu.weather.widgets
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.maytheu.weather.R
@@ -38,9 +36,8 @@ import com.maytheu.weather.utils.formatDateTime
 import com.maytheu.weather.utils.formatDecimals
 
 
-
 @Composable
-fun WeatherContent(data: Weather) {
+fun WeatherContent(data: Weather, isImperial: Boolean) {
     var weatherList = data.list[0]
     Column(
         modifier = Modifier
@@ -79,7 +76,8 @@ fun WeatherContent(data: Weather) {
                 )
             }
         }
-        HumidityWindPressure(data = weatherList)
+
+        HumidityWindPressure(data = weatherList, isImperial = isImperial)
 
         Divider()
 
@@ -250,7 +248,7 @@ fun SunsetSunrise(data: WeatherList) {
 }
 
 @Composable
-fun HumidityWindPressure(data: WeatherList) {
+fun HumidityWindPressure(data: WeatherList, isImperial: Boolean) {
     Row(
         modifier = Modifier
             .padding(15.dp)
@@ -282,7 +280,10 @@ fun HumidityWindPressure(data: WeatherList) {
                 contentDescription = "wind icon",
                 modifier = Modifier.size(20.dp)
             )
-            Text(text = "${data.wind.speed} mph", style = MaterialTheme.typography.caption)
+            Text(
+                text = "${formatDecimals(data.wind.speed)}" + if (isImperial) "mph" else "m/s",
+                style = MaterialTheme.typography.caption
+            )
         }
     }
 }

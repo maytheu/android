@@ -31,20 +31,26 @@ fun WeatherSettingsScreen(
     settingsViewModel: WeatherSettingsViewModel = hiltViewModel(),
 ) {
 
-    val meaasurementUnit = listOf<String>("Imperial (F)", "Metric (F)")
+    val measurementUnit = listOf<String>("Imperial (F)", "Metric (F)")
 
     val choicesFromDb = settingsViewModel.units.collectAsState().value
 
-    val defaultChoice =
-        if (choicesFromDb.isNullOrEmpty()) meaasurementUnit[0] else choicesFromDb[0].unit
+    var unitToggleState by remember {
+        mutableStateOf(false)
+    }
 
     var choiceState by remember {
-        mutableStateOf(defaultChoice)
+        mutableStateOf(measurementUnit[0])
     }
 
-    var unitToggleState by remember {
-        mutableStateOf(defaultChoice === meaasurementUnit[0])
+    if (!choicesFromDb.isNullOrEmpty()) {
+        unitToggleState = choicesFromDb[0].unit == measurementUnit[0]
+        choiceState = choicesFromDb[0].unit
     }
+
+
+
+
 
     Scaffold(topBar = {
         WeatherAppBar(
@@ -74,11 +80,8 @@ fun WeatherSettingsScreen(
                     checked = !unitToggleState,
                     onCheckedChange = {
                         unitToggleState = !it
-                        if (unitToggleState) {
-                            choiceState = meaasurementUnit[0]
-                        } else {
-                            choiceState = meaasurementUnit[1]
-                        }
+                        if (unitToggleState) choiceState = measurementUnit[0] else
+                            choiceState = measurementUnit[1]
                     },
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
@@ -86,7 +89,7 @@ fun WeatherSettingsScreen(
                         .padding(5.dp)
                         .background(Color.Magenta.copy(alpha = 0.4f)),
                 ) {
-                    Text(text = if (unitToggleState) "Fahrenheit °F" else "Celcius °C")
+                    Text(text = if (unitToggleState) "Fahrenheit °F" else "Celsius °C")
                 }
                 Button(
                     onClick = {
