@@ -13,7 +13,7 @@ import com.maytheu.reader.screens.stats.StatsScreen
 import com.maytheu.reader.screens.update.UpdateScreen
 
 @Composable
-fun ReaderNavigstion() {
+fun ReaderNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = ReaderScreens.SplashScreen.name) {
