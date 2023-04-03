@@ -20,9 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import com.maytheu.reader.components.ReaderLogo
 import com.maytheu.reader.navigation.ReaderScreens
 import kotlinx.coroutines.delay
+
 
 @Composable
 fun SplashScreen(navController: NavController = NavController(context = LocalContext.current)) {
@@ -36,9 +37,9 @@ fun SplashScreen(navController: NavController = NavController(context = LocalCon
                 OvershootInterpolator(4f).getInterpolation(it)
             }
         ))
-        delay(3000L)
+        delay(1500L)
         //check if user
-        navController.navigate(ReaderScreens.LoginScreen.name )
+        navController.navigate(ReaderScreens.LoginScreen.name)
     }
 
     Surface(
@@ -54,11 +55,7 @@ fun SplashScreen(navController: NavController = NavController(context = LocalCon
             modifier = Modifier.padding(1.dp), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "ReAdEr",
-                style = MaterialTheme.typography.h3,
-                color = Color.Red.copy(alpha = 0.5f)
-            )
+            ReaderLogo()
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -70,3 +67,13 @@ fun SplashScreen(navController: NavController = NavController(context = LocalCon
         }
     }
 }
+
+//@Composable
+//fun ReaderLogo(modifier: Modifier = Modifier) {
+//    Text(
+//        text = "ReAdEr",
+//        modifier = modifier.padding(bottom = 10.dp),
+//        style = MaterialTheme.typography.h3,
+//        color = Color.Red.copy(alpha = 0.5f)
+//    )
+//}
