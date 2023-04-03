@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.maytheu.reader.navigation.ReaderScreens
 import kotlinx.coroutines.delay
 
 @Composable
@@ -36,6 +37,8 @@ fun SplashScreen(navController: NavController = NavController(context = LocalCon
             }
         ))
         delay(3000L)
+        //check if user
+        navController.navigate(ReaderScreens.LoginScreen.name )
     }
 
     Surface(
