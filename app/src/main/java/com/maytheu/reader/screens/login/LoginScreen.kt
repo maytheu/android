@@ -3,10 +3,10 @@ package com.maytheu.reader.screens.login
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,15 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.maytheu.reader.components.EmailInput
 import com.maytheu.reader.components.ReaderLogo
 
-@Preview
 @Composable
 fun LoginScreen(navController: NavController = NavController(context = LocalContext.current)) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -32,10 +31,12 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
             verticalArrangement = Arrangement.Top
         ) {
             ReaderLogo()
+
+
         }
     }
 }
-
+@Preview
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm() {
@@ -56,6 +57,8 @@ fun UserForm() {
                 rememberScrollState()
             ), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        EmailInput(emailState = email, onAction = KeyboardActions {
+            passwordFocusRequest.requestFocus()
+        })
     }
 }
