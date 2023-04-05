@@ -1,5 +1,6 @@
 package com.maytheu.reader.screens.login
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,12 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.maytheu.reader.components.EmailInput
+import com.maytheu.reader.components.PasswordInput
 import com.maytheu.reader.components.ReaderLogo
 
 @Composable
@@ -31,15 +34,22 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
             verticalArrangement = Arrangement.Top
         ) {
             ReaderLogo()
-
+            UserForm(){email, password ->
+                Log.d("TAG", "LoginScreen: $email $password")
+            }
 
         }
     }
 }
+
 @Preview
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun UserForm() {
+fun UserForm(
+    isLoading: Boolean = false,
+    isCreateAcc: Boolean = false,
+    onDone: (email: String, password: String) -> Unit = { email: String, password: String -> },
+) {
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val passwordVisibility = rememberSaveable { mutableStateOf(false) }
@@ -57,8 +67,21 @@ fun UserForm() {
                 rememberScrollState()
             ), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        EmailInput(emailState = email, onAction = KeyboardActions {
-            passwordFocusRequest.requestFocus()
-        })
+        EmailInput(
+            emailState = email,
+            onAction = KeyboardActions {
+                passwordFocusRequest.requestFocus()
+            },
+            enabled = !isLoading,
+        )
+
+        PasswordInput(passwordState = password,
+            modifier = Modifier.focusRequester(passwordFocusRequest),
+            passwordVisibility = passwordVisibility,
+            enabled = !isLoading,
+            onAction = KeyboardActions {
+                if (!valid) return@KeyboardActions
+                onDone(email.value.trim(), password.value.trim())
+            })
     }
 }
