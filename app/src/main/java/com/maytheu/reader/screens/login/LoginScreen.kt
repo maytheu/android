@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.maytheu.reader.components.EmailInput
 import com.maytheu.reader.components.PasswordInput
 import com.maytheu.reader.components.ReaderLogo
+import com.maytheu.reader.components.SubmitButton
 
 @Composable
 fun LoginScreen(navController: NavController = NavController(context = LocalContext.current)) {
@@ -34,7 +35,7 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
             verticalArrangement = Arrangement.Top
         ) {
             ReaderLogo()
-            UserForm(){email, password ->
+            UserForm() { email, password ->
                 Log.d("TAG", "LoginScreen: $email $password")
             }
 
@@ -42,7 +43,6 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
     }
 }
 
-@Preview
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm(
@@ -82,6 +82,17 @@ fun UserForm(
             onAction = KeyboardActions {
                 if (!valid) return@KeyboardActions
                 onDone(email.value.trim(), password.value.trim())
+                keyboardController?.hide()
             })
+
+        SubmitButton(
+            textId = if (isCreateAcc) "Create Account" else "Login",
+            loading = isLoading,
+            validInput = valid
+        ) {
+            onDone(email.value.trim(), password.value.trim())
+            keyboardController?.hide()
+        }
     }
 }
+
