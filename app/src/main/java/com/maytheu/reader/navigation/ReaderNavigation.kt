@@ -41,9 +41,9 @@ fun ReaderNavigation() {
             BookDetailsScreen(navController = navController)
         }
 
-        composable(ReaderScreens.SignUpScreen.name) {
-            LoginScreen(navController = navController)
-        }
+//        composable(ReaderScreens.SignUpScreen.name) {
+//            LoginScreen(navController = navController)
+//        }
 
         composable(ReaderScreens.StatsScreen.name) {
             StatsScreen(navController = navController)

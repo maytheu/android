@@ -2,6 +2,7 @@ package com.maytheu.reader.screens.login
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -27,18 +29,47 @@ import com.maytheu.reader.components.PasswordInput
 import com.maytheu.reader.components.ReaderLogo
 import com.maytheu.reader.components.SubmitButton
 
+@Preview
 @Composable
 fun LoginScreen(navController: NavController = NavController(context = LocalContext.current)) {
+    val showUserForm = rememberSaveable {
+        mutableStateOf(true)
+    }
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
             ReaderLogo()
-            UserForm() { email, password ->
+            if (showUserForm.value) UserForm(
+                isLoading = false,
+                isCreateAcc = false
+            ) { email, password ->
                 Log.d("TAG", "LoginScreen: $email $password")
+            } else UserForm(isCreateAcc = true) { email, password ->
+                //create account
             }
 
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Row(
+                modifier = Modifier.padding(20.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val link = if (showUserForm.value) "Sign up" else "Login"
+                val text = if (showUserForm.value) "Mew User?" else "Returning User?"
+
+                Text(text = text)
+                Text(
+                    text = link,
+                    modifier = Modifier
+                        .clickable { showUserForm.value = !showUserForm.value }
+                        .padding(start = 5.dp),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.secondaryVariant
+                )
+            }
         }
     }
 }
@@ -67,6 +98,11 @@ fun UserForm(
                 rememberScrollState()
             ), horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (isCreateAcc) Text(
+            text = "Please enter a valid email address and password that is six characters",
+            modifier = Modifier.padding(5.dp)
+        )
+
         EmailInput(
             emailState = email,
             onAction = KeyboardActions {
