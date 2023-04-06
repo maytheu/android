@@ -38,7 +38,7 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center
         ) {
             ReaderLogo()
             if (showUserForm.value) UserForm(
