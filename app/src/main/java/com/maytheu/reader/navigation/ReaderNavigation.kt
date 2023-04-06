@@ -1,6 +1,7 @@
 package com.maytheu.reader.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -8,6 +9,7 @@ import com.maytheu.reader.screens.SplashScreen
 import com.maytheu.reader.screens.details.BookDetailsScreen
 import com.maytheu.reader.screens.home.HomeScreen
 import com.maytheu.reader.screens.login.LoginScreen
+import com.maytheu.reader.screens.login.LoginViewModel
 import com.maytheu.reader.screens.search.SearchScreen
 import com.maytheu.reader.screens.stats.StatsScreen
 import com.maytheu.reader.screens.update.UpdateScreen
@@ -26,7 +28,8 @@ fun ReaderNavigation() {
         }
 
         composable(ReaderScreens.LoginScreen.name) {
-            LoginScreen(navController = navController)
+            val viewModel = hiltViewModel<LoginViewModel>()
+            LoginScreen(navController = navController, loginViewModel = viewModel)
         }
 
         composable(ReaderScreens.UpdateScreen.name) {

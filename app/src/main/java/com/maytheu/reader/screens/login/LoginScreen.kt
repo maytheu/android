@@ -28,10 +28,13 @@ import com.maytheu.reader.components.EmailInput
 import com.maytheu.reader.components.PasswordInput
 import com.maytheu.reader.components.ReaderLogo
 import com.maytheu.reader.components.SubmitButton
+import com.maytheu.reader.navigation.ReaderScreens
 
-@Preview
 @Composable
-fun LoginScreen(navController: NavController = NavController(context = LocalContext.current)) {
+fun LoginScreen(
+    navController: NavController = NavController(context = LocalContext.current),
+    loginViewModel: LoginViewModel,
+) {
     val showUserForm = rememberSaveable {
         mutableStateOf(true)
     }
@@ -45,7 +48,10 @@ fun LoginScreen(navController: NavController = NavController(context = LocalCont
                 isLoading = false,
                 isCreateAcc = false
             ) { email, password ->
-                Log.d("TAG", "LoginScreen: $email $password")
+                //make login request
+                loginViewModel.loginUser(email, password) {
+                    navController.navigate(ReaderScreens.HomeScreen.name)
+                }
             } else UserForm(isCreateAcc = true) { email, password ->
                 //create account
             }

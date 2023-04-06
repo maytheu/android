@@ -20,19 +20,20 @@ class LoginViewModel : ViewModel() {
 
     val loading: LiveData<Boolean> = _loading
 
-    fun loginUser(email: String, password: String) = viewModelScope.launch {
-        try {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("TAG", "loginUser: Go to home")
-                } else {
-                    Log.d("TAG", "loginUser: Not successfull")
+    fun loginUser(email: String, password: String, navigateHome: () -> Unit) =
+        viewModelScope.launch {
+            try {
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        navigateHome()
+                    } else {
+                        Log.d("TAG", "loginUser: Not successfull")
+                    }
                 }
+            } catch (e: Exception) {
+                Log.d("TAG", "loginUser: ${e.message}")
             }
-        } catch (e: Exception) {
-            Log.d("TAG", "loginUser: ${e.message}")
         }
-    }
 
     fun signupUser(email: String, password: String) {
 
