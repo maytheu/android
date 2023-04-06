@@ -35,8 +35,18 @@ class LoginViewModel : ViewModel() {
             }
         }
 
-    fun signupUser(email: String, password: String) {
-
+    fun signupUser(email: String, password: String, navigateHome: () -> Unit) {
+        if (_loading.value == false) {
+            _loading.value = true
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    navigateHome()
+                } else {
+                    Log.d("TAG", "signupUser: Not successfull")
+                }
+                _loading.value = false
+            }
+        }
     }
 
 }

@@ -54,6 +54,9 @@ fun LoginScreen(
                 }
             } else UserForm(isCreateAcc = true) { email, password ->
                 //create account
+                loginViewModel.signupUser(email, password) {
+                    navController.navigate(ReaderScreens.HomeScreen.name)
+                }
             }
 
             Spacer(modifier = Modifier.height(15.dp))
