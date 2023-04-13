@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.maytheu.reader.data.ReaderUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -54,9 +55,13 @@ class LoginViewModel : ViewModel() {
 
     fun createUser(displayName: String?) {
         val userId = auth.currentUser?.uid
-        val user = mutableMapOf<String, Any>()
-        user["user_id"] = userId.toString()
-        user["displayName"] = displayName.toString()
+        val user = ReaderUser(
+            userId = userId.toString(),
+            displayName = displayName.toString(),
+            quote = "",
+            avatar = "",
+            proofession = "Mobile Developer", id = null
+        ).firebaseMap()
 
         FirebaseFirestore.getInstance().collection("users").add(user)
     }
