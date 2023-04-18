@@ -1,4 +1,4 @@
-package com.maytheu.reader.data
+package com.maytheu.reader.model
 
 data class ReaderUser(
     val id: String?,

@@ -100,4 +100,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+//    icons - makes project heavire
+    implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 }
