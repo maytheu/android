@@ -8,10 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
+import coil.transform.CircleCropTransformation
 import com.google.firebase.auth.FirebaseAuth
 import com.maytheu.reader.components.FABContent
 import com.maytheu.reader.components.ReaderAPPBar
@@ -41,8 +45,7 @@ import com.maytheu.reader.navigation.ReaderScreens
 @Preview
 @Composable
 fun HomeScreen(navController: NavController = NavController(LocalContext.current)) {
-    Scaffold(
-        topBar = { ReaderAPPBar(title = "Reader", navController = navController) },
+    Scaffold(topBar = { ReaderAPPBar(title = "Reader", navController = navController) },
         floatingActionButton = {
             FABContent {
 
@@ -56,8 +59,10 @@ fun HomeScreen(navController: NavController = NavController(LocalContext.current
 
 @Composable
 fun HomeContent(navController: NavController = NavController(LocalContext.current)) {
-    val currentUser = if (!FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty())
-        FirebaseAuth.getInstance().currentUser?.email?.split("@")?.get(0) else "N/A"
+    val currentUser =
+        if (!FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) FirebaseAuth.getInstance().currentUser?.email?.split(
+            "@"
+        )?.get(0) else "N/A"
 
     Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.Top) {
         Row(modifier = Modifier.align(alignment = Alignment.Start)) {
@@ -84,15 +89,130 @@ fun HomeContent(navController: NavController = NavController(LocalContext.curren
                     overflow = TextOverflow.Clip
                 )
                 Divider()
+
+
             }
         }
+
+        BookCard()
+
     }
 }
 
 
-
 @Composable
 fun ReadingArea(book: List<Book>, navController: NavController) {
+}
 
+@Preview
+@Composable
+fun BookCard(
+    book: Book = Book(id = "1", authors = "me", title = "Potter"),
+    onPressDetials: (String) -> Unit = {},
+) {
+    //screen size info
+    val context = LocalContext.current
+    val resources = context.resources
+    val screen = resources.displayMetrics
+    val screenWidth = screen.widthPixels / screen.density
+
+    val spacing = 10.dp
+
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current).data("https://robohash.org/test.jpg")
+            .crossfade(true).size(Size.ORIGINAL).build()
+    )
+    Card(
+        modifier = Modifier
+            .height(250.dp)
+            .width(200.dp)
+            .padding(20.dp)
+            .clickable { onPressDetials.invoke(book.id.toString()) },
+        elevation = 10.dp,
+        backgroundColor = Color.White,
+        shape = RoundedCornerShape(40.dp)
+    ) {
+        Column(
+            modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(horizontalArrangement = Arrangement.Center) {
+//                AsyncImage(
+//                    model = ImageRequest.Builder(LocalContext.current)
+//                        .data("https://robohash.org/test.jpg")
+//                        .transformations(CircleCropTransformation()).build(),
+//                    contentDescription = "Book image",
+//                    modifier = Modifier
+//                        .height(150.dp)
+//                        .width(100.dp)
+//                        .padding(5.dp)
+//                )
+
+
+                Image(
+                    painter = painter,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .height(150.dp)
+                        .width(100.dp)
+                        .padding(5.dp)
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Column(
+                    modifier = Modifier.padding(top = 30.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Favorite,
+                        contentDescription = "Fav icon",
+                        modifier = Modifier.padding(bottom = 2.dp)
+                    )
+
+
+
+                    BottomRating(score = 3.5)
+                }
+            }
+
+            Text(
+                text = book.title.toString(),
+                modifier = Modifier.padding(5.dp),
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Text(
+                text = book.authors.toString(),
+                modifier = Modifier.padding(5.dp),
+                style = MaterialTheme.typography.caption
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomRating(score: Double) {
+    Surface(
+        modifier = Modifier
+            .padding(5.dp)
+            .height(70.dp),
+        shape = RoundedCornerShape(60.dp),
+        elevation = 5.dp,
+        color = Color.White
+    ) {
+        Column(modifier = Modifier.padding(5.dp)) {
+            Icon(
+                imageVector = Icons.Filled.StarBorder,
+                contentDescription = "Star icon",
+                modifier = Modifier.padding(2.dp)
+            )
+
+            Text(text = score.toString(), style = MaterialTheme.typography.subtitle1)
+        }
+    }
 }
 
