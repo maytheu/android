@@ -31,6 +31,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.maytheu.reader.components.FABContent
+import com.maytheu.reader.components.ReaderAPPBar
+import com.maytheu.reader.components.TitleSection
 import com.maytheu.reader.model.Book
 import com.maytheu.reader.navigation.ReaderScreens
 
@@ -86,74 +89,10 @@ fun HomeContent(navController: NavController = NavController(LocalContext.curren
     }
 }
 
-@Composable
-fun ReaderAPPBar(title: String, navController: NavController, showProfile: Boolean = true) {
-    TopAppBar(title = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (showProfile) {
-                Icon(
-                    imageVector = Icons.Default.Favorite, contentDescription = "icon",
-                    modifier = Modifier
-                        .scale(0.9f)
-                        .clip(RoundedCornerShape(12.dp))
-                )
-                Text(
-                    text = title,
-                    color = Color.Red.copy(alpha = 0.7f),
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                )
 
-                Spacer(modifier = Modifier.width(200.dp))
-
-
-            }
-        }
-    }, actions = {
-        IconButton(onClick = {
-            FirebaseAuth.getInstance().signOut().run {
-                navController.navigate(ReaderScreens.LoginScreen.name)
-            }
-        }) {
-            Icon(
-                imageVector = Icons.Default.Logout,
-                contentDescription = "Logout",
-            )
-        }
-    }, elevation = 0.dp, backgroundColor = Color.Transparent)
-}
-
-@Composable
-fun FABContent(onTap: () -> Unit) {
-    FloatingActionButton(
-        onClick = { onTap() },
-        shape = RoundedCornerShape(50.dp),
-        backgroundColor = Color(0xFF92CBDF)
-    )
-    {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Add a book",
-            tint = MaterialTheme.colors.primary
-        )
-    }
-
-}
 
 @Composable
 fun ReadingArea(book: List<Book>, navController: NavController) {
 
 }
 
-@Composable
-fun TitleSection(modifier: Modifier = Modifier, label: String) {
-    Surface(modifier = modifier.padding(start = 5.dp, top = 3.dp)) {
-        Column {
-            Text(
-                text = label,
-                fontSize = 20.sp,
-                fontStyle = FontStyle.Normal,
-                textAlign = TextAlign.Left
-            )
-        }
-    }
-}
