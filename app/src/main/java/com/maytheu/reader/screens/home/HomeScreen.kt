@@ -42,7 +42,6 @@ import com.maytheu.reader.model.Book
 import com.maytheu.reader.navigation.ReaderScreens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
 @Composable
 fun HomeScreen(navController: NavController = NavController(LocalContext.current)) {
     Scaffold(topBar = { ReaderAPPBar(title = "Reader", navController = navController) },
@@ -173,7 +172,7 @@ fun BookCard(
 
 
 
-                    BottomRating(score = 3.5)
+                    BookRating(score = 3.5)
                 }
             }
 
@@ -190,12 +189,23 @@ fun BookCard(
                 modifier = Modifier.padding(5.dp),
                 style = MaterialTheme.typography.caption
             )
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                CardButtonRounded()
+            }
         }
+
+
     }
+
+
 }
 
 @Composable
-fun BottomRating(score: Double) {
+fun BookRating(score: Double) {
     Surface(
         modifier = Modifier
             .padding(5.dp)
@@ -216,3 +226,25 @@ fun BottomRating(score: Double) {
     }
 }
 
+@Composable
+fun CardButtonRounded(label: String = "button", radius: Int = 30, onClicked: () -> Unit = {}) {
+    Surface(
+        modifier = Modifier.clip(
+            RoundedCornerShape(
+                bottomEndPercent = radius, topStartPercent = radius
+            )
+        ),
+        color = Color(0XFF92CBDF)
+    ) {
+        Column(
+            modifier = Modifier
+                .width(90.dp)
+                .heightIn(40.dp)
+                .clickable { onClicked.invoke() },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = label, style = TextStyle(Color.White, fontSize = 16.sp))
+        }
+    }
+}
