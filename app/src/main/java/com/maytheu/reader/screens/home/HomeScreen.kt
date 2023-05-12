@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -61,6 +63,13 @@ fun HomeContent(navController: NavController = NavController(LocalContext.curren
             "@"
         )?.get(0) else "N/A"
 
+    val testBook = listOf<Book>(
+        Book(title = "test1", notes = "testtest1"),
+        Book(title = "test2", notes = "testtest2"),
+        Book(title = "test3", notes = "testtest3"),
+        Book(title = "test4", notes = "testtest4")
+    )
+
     Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.Top) {
         Row(modifier = Modifier.align(alignment = Alignment.Start)) {
             TitleSection(label = "Your Reading \n Reading now...")
@@ -90,13 +99,43 @@ fun HomeContent(navController: NavController = NavController(LocalContext.curren
 
             }
         }
-        BookCard()
+        ReadingArea(book = listOf(), navController = navController)
+
+        TitleSection(label = "Reading list")
+        BookListArea(listOfBooks = testBook, navController = navController)
     }
 }
 
+@Composable
+fun BookListArea(listOfBooks: List<Book>, navController: NavController) {
+    HorizontalBookScroll(listOfBooks = listOfBooks) {
+        navController.navigate(ReaderScreens.BookDetailsScreen.name)
+    }
+}
+
+@Composable
+fun HorizontalBookScroll(listOfBooks: List<Book>, onBookPressed: (String) -> Unit) {
+    val scrollState = rememberScrollState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(300.dp)
+            .horizontalScroll(scrollState)
+    ) {
+        //show all books by looping
+        for (book in listOfBooks) {
+            BookCard(book = book) {
+                onBookPressed(it)
+            }
+
+        }
+    }
+}
 
 @Composable
 fun ReadingArea(book: List<Book>, navController: NavController) {
+    BookCard()
+
 }
 
 
