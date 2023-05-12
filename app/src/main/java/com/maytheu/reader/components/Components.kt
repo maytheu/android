@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -170,7 +171,6 @@ fun TitleSection(modifier: Modifier = Modifier, label: String) {
 }
 
 
-
 @Composable
 fun BookRating(score: Double) {
     Surface(
@@ -192,8 +192,15 @@ fun BookRating(score: Double) {
         }
     }
 }
+
 @Composable
-fun ReaderAPPBar(title: String, navController: NavController, showProfile: Boolean = true) {
+fun ReaderAPPBar(
+    title: String,
+    icon: ImageVector? = null,
+    navController: NavController,
+    showProfile: Boolean = true,
+    onBackArrow: () -> Unit = {},
+) {
     TopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -204,6 +211,15 @@ fun ReaderAPPBar(title: String, navController: NavController, showProfile: Boole
                             .scale(0.9f)
                             .clip(RoundedCornerShape(12.dp))
                     )
+
+                    if (icon != null) Icon(
+                        imageVector = icon,
+                        contentDescription = "Arrow back",
+                        tint = Color.Red.copy(alpha = 0.7f),
+                        modifier = Modifier.clickable { onBackArrow.invoke() })
+
+                    Spacer(modifier = Modifier.width(40.dp))
+
                     Text(
                         text = title,
                         color = Color.Red.copy(alpha = 0.7f),
@@ -222,10 +238,13 @@ fun ReaderAPPBar(title: String, navController: NavController, showProfile: Boole
                     navController.navigate(ReaderScreens.LoginScreen.name)
                 }
             }) {
-                Icon(
-                    imageVector = Icons.Default.Logout,
-                    contentDescription = "Logout",
-                )
+                if (showProfile) {
+                    Icon(
+                        imageVector = Icons.Default.Logout,
+                        contentDescription = "Logout",
+                    )
+                } else Box(modifier = Modifier.padding(1.dp))
+
             }
         },
         elevation = 0.dp,

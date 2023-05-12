@@ -74,7 +74,7 @@ fun HomeContent(navController: NavController = NavController(LocalContext.curren
         Row(modifier = Modifier.align(alignment = Alignment.Start)) {
             TitleSection(label = "Your Reading \n Reading now...")
 
-            Spacer(modifier = Modifier.fillMaxSize(0.7f))
+            Spacer(modifier = Modifier.fillMaxWidth(0.7f))
 
             Column {
                 Icon(imageVector = Icons.Filled.AccountCircle,
