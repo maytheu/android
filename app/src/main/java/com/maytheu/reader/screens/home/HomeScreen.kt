@@ -47,7 +47,7 @@ fun HomeScreen(navController: NavController = NavController(LocalContext.current
     Scaffold(topBar = { ReaderAPPBar(title = "Reader", navController = navController) },
         floatingActionButton = {
             FABContent {
-
+                navController.navigate(ReaderScreens.SearchScreen.name)
             }
         }) {
         Surface(modifier = Modifier.fillMaxSize()) {

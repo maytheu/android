@@ -133,7 +133,7 @@ fun InputField(
         textStyle = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground),
         modifier = modifier
             .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
-            .fillMaxSize(),
+            .fillMaxWidth(),
         enabled = enabled,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         keyboardActions = onAction
@@ -211,25 +211,24 @@ fun ReaderAPPBar(
                             .scale(0.9f)
                             .clip(RoundedCornerShape(12.dp))
                     )
-
-                    if (icon != null) Icon(
-                        imageVector = icon,
-                        contentDescription = "Arrow back",
-                        tint = Color.Red.copy(alpha = 0.7f),
-                        modifier = Modifier.clickable { onBackArrow.invoke() })
-
-                    Spacer(modifier = Modifier.width(40.dp))
-
-                    Text(
-                        text = title,
-                        color = Color.Red.copy(alpha = 0.7f),
-                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                    )
-
-                    Spacer(modifier = Modifier.width(200.dp))
-
-
                 }
+                if (icon != null) Icon(
+                    imageVector = icon,
+                    contentDescription = "Arrow back",
+                    tint = Color.Red.copy(alpha = 0.7f),
+                    modifier = Modifier.clickable { onBackArrow.invoke() })
+
+                Spacer(modifier = Modifier.width(40.dp))
+
+                Text(
+                    text = title,
+                    color = Color.Red.copy(alpha = 0.7f),
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                )
+
+                Spacer(modifier = Modifier.width(200.dp))
+
+
             }
         },
         actions = {
@@ -239,11 +238,13 @@ fun ReaderAPPBar(
                 }
             }) {
                 if (showProfile) {
-                    Icon(
-                        imageVector = Icons.Default.Logout,
-                        contentDescription = "Logout",
-                    )
-                } else Box(modifier = Modifier.padding(1.dp))
+                    Row() {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = "Logout",
+                        )
+                    }
+                } else Box {}
 
             }
         },
