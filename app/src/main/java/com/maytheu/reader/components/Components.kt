@@ -289,11 +289,11 @@ fun BookCard(
     )
     Card(
         modifier = Modifier
-            .height(260.dp)
-            .width(202.dp)
-            .padding(20.dp)
+            .height(250.dp)
+            .width(210.dp)
+            .padding(10.dp)
             .clickable { onPressDetials.invoke(book.id.toString()) },
-        elevation = 10.dp,
+        elevation = 5.dp,
         backgroundColor = Color.White,
         shape = RoundedCornerShape(29.dp)
     ) {
@@ -318,12 +318,12 @@ fun BookCard(
                     painter = painter,
                     contentDescription = "",
                     modifier = Modifier
-                        .height(100.dp)
+                        .height(150.dp)
                         .width(100.dp)
                         .padding(4.dp)
                 )
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(30.dp))
 
                 Column(
                     modifier = Modifier.padding(top = 25.dp),
