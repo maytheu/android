@@ -1,5 +1,6 @@
 package com.maytheu.reader.repository
 
+import com.maytheu.reader.data.DataResource
 import com.maytheu.reader.data.Progress
 import com.maytheu.reader.model.Item
 import com.maytheu.reader.network.GoogleBooksApi
@@ -29,5 +30,27 @@ class GoogleBooksRepo @Inject constructor(private val bookApi: GoogleBooksApi) {
             _apiBookState.e = e
         }
         return _apiBookState
+    }
+
+    suspend fun updateSearchTerm(searchTerm: String): DataResource<List<Item>> {
+        return try {
+            DataResource.Loading(data = true)
+            val bookList = bookApi.getAllBooks(searchTerm).items
+            if (bookList.isEmpty()) DataResource.Loading(false)
+            DataResource.Success(bookList)
+        } catch (e: Exception) {
+            DataResource.Error(message = e.message.toString())
+        }
+    }
+
+    suspend fun updateBookInfo(bookId: String): DataResource<Item> {
+        val resp = try {
+            DataResource.Loading(data = true)
+            bookApi.getBookInfo((bookId))
+        } catch (e: Exception) {
+            return DataResource.Error(message = e.message.toString())
+        }
+        DataResource.Loading(false)
+        return DataResource.Success(data = resp)
     }
 }
