@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter.State.Empty.painter
@@ -35,7 +36,7 @@ import com.maytheu.reader.navigation.ReaderScreens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hiltViewModel()) {
     Scaffold(topBar = {
         ReaderAPPBar(
             title = "Search Books",
@@ -51,8 +52,9 @@ fun SearchScreen(navController: NavController) {
                 SearchForm(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
+                        .padding(20.dp), viewModel = viewModel
+                ) { query ->
+                    viewModel.searchBooks(query)
 
                 }
 
@@ -127,6 +129,7 @@ fun SearchForm(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
     hint: String = "Search",
+    viewModel: SearchViewModel,
     onSearch: (String) -> Unit = {},
 ) {
     Column() {
