@@ -1,6 +1,7 @@
 package com.maytheu.reader.di
 
 import com.maytheu.reader.network.GoogleBooksApi
+import com.maytheu.reader.repository.GoogleBooksRepo
 import com.maytheu.reader.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Singleton
+    @Provides
+    fun provideGoogleBookRepo(api: GoogleBooksApi) = GoogleBooksRepo(api)
 
     @Singleton
     @Provides
