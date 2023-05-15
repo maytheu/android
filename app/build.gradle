@@ -88,12 +88,15 @@ dependencies {
 //Coroutines lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
+    //External api helpers
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //GSON converter
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //Okhttp
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 
-    //imaages with coil
+    //images with coil
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     //room
