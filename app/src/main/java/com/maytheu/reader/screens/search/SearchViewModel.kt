@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val bookRepo: GoogleBooksRepo) : ViewModel() {
-    private val _searchBooks: MutableState<Progress<List<Item>, Boolean, Exception>> =
+     val _searchBooks: MutableState<Progress<List<Item>, Boolean, Exception>> =
         mutableStateOf(Progress(null, true, Exception("")))
 
     init {
@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(private val bookRepo: GoogleBooksRepo)
             if (search.isEmpty()) return@launch
             _searchBooks.value.loading = true
             _searchBooks.value = bookRepo.searchBook(search)
-            Log.d("TAG", "searchBooks: ${_searchBooks.value.data.toString()}")
+//            Log.d("TAG", "searchBooks: ${_searchBooks.value.data.toString()}")
             if (_searchBooks.value.data.toString().isNotEmpty()) _searchBooks.value.loading = false
         }
     }

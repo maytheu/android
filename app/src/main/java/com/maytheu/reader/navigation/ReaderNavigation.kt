@@ -11,6 +11,7 @@ import com.maytheu.reader.screens.home.HomeScreen
 import com.maytheu.reader.screens.login.LoginScreen
 import com.maytheu.reader.screens.login.LoginViewModel
 import com.maytheu.reader.screens.search.SearchScreen
+import com.maytheu.reader.screens.search.SearchViewModel
 import com.maytheu.reader.screens.stats.StatsScreen
 import com.maytheu.reader.screens.update.UpdateScreen
 
@@ -37,7 +38,8 @@ fun ReaderNavigation() {
         }
 
         composable(ReaderScreens.SearchScreen.name) {
-            SearchScreen(navController = navController)
+            val viewModel = hiltViewModel<SearchViewModel>()
+            SearchScreen(navController = navController, viewModel)
         }
 
         composable(ReaderScreens.BookDetailsScreen.name) {

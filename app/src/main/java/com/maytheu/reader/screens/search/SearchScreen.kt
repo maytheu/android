@@ -1,6 +1,7 @@
 package com.maytheu.reader.screens.search
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -60,20 +61,30 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                BookList(navController)
+                BookList(navController, viewModel)
             }
         }
     }
 }
 
 @Composable
-fun BookList(navController: NavController) {
+fun BookList(navController: NavController, viewModel: SearchViewModel) {
     val testBook = listOf<Book>(
         Book(title = "test1", notes = "testtest1"),
         Book(title = "test2", notes = "testtest2"),
         Book(title = "test3", notes = "testtest3"),
         Book(title = "test4", notes = "testtest4")
     )
+
+
+    if(viewModel._searchBooks.value.loading==true){
+        Log.d("TAG", "searchBooks: ${viewModel._searchBooks.value.loading.toString()}")
+        CircularProgressIndicator()
+    }else{
+        Log.d("TAG", "searchBooks: ${viewModel._searchBooks.value.data.toString()}")
+
+    }
+
 
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
         items(items = testBook) { book ->
