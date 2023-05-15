@@ -2,10 +2,13 @@ package com.maytheu.reader.screens.search
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.util.query
+import com.maytheu.reader.data.DataResource
 import com.maytheu.reader.data.Progress
 import com.maytheu.reader.model.Item
 import com.maytheu.reader.repository.GoogleBooksRepo
@@ -16,14 +19,42 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val bookRepo: GoogleBooksRepo) : ViewModel() {
-     val _searchBooks: MutableState<Progress<List<Item>, Boolean, Exception>> =
+    val _searchBooks: MutableState<Progress<List<Item>, Boolean, Exception>> =
         mutableStateOf(Progress(null, true, Exception("")))
+    var updateSearchList: List<Item> by mutableStateOf(listOf())
 
     init {
-        searchBooks("Typescript")
+        searchBooks(+"Typescript")
+        loadBooks()
     }
 
-     fun searchBooks(search: String) {
+    fun loadBooks() {
+        updatedSearch("Android")
+    }
+
+    private fun updatedSearch(search: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            if (search.isEmpty()) return@launch
+            try {
+                when (val response = bookRepo.updateSearchTerm(search)) {
+                    is DataResource.Success -> {
+                        updateSearchList = response.data!!
+                    }
+
+                    is DataResource.Error -> {
+                        Log.d("TAG", "updatedSearch: Error fetching data")
+                    }
+                    else -> {
+
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("TAG", "updatedSearch: ${e.message}")
+            }
+        }
+    }
+
+    fun searchBooks(search: String) {
         viewModelScope.launch {
             if (search.isEmpty()) return@launch
             _searchBooks.value.loading = true
