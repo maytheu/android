@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -94,8 +95,8 @@ fun BookRow(book: Item, navController: NavController) {
         "https://robohash.org/test.jpg"
     }
     val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current).data(imageUrl)
-            .crossfade(true).size(Size.ORIGINAL).build()
+        model = ImageRequest.Builder(LocalContext.current).data(imageUrl).crossfade(true)
+            .size(Size.ORIGINAL).build()
     )
 
     Card(
@@ -122,9 +123,24 @@ fun BookRow(book: Item, navController: NavController) {
                 Text(
                     text = "Author: ${book.volumeInfo.authors}",
                     overflow = TextOverflow.Clip,
-                    style = MaterialTheme.typography.caption
+                    style = MaterialTheme.typography.caption,
+                    fontStyle = FontStyle.Italic
                 )
-                //TODO add ther fields
+
+                Text(
+                    text = "Date: ${book.volumeInfo.publishedDate}",
+                    overflow = TextOverflow.Clip,
+                    style = MaterialTheme.typography.caption,
+                    fontStyle = FontStyle.Italic
+                )
+
+                Text(
+                    text = "Category: ${book.volumeInfo.categories}",
+                    overflow = TextOverflow.Clip,
+                    style = MaterialTheme.typography.caption,
+                    fontStyle = FontStyle.Italic
+                )
+
             }
 
         }
@@ -149,8 +165,7 @@ fun SearchForm(
             queryState.value.trim().isNotEmpty()
         }
 
-        InputField(
-            valueState = queryState,
+        InputField(valueState = queryState,
             label = "Search",
             enabled = true,
             onAction = KeyboardActions {
