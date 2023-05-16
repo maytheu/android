@@ -25,15 +25,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.maytheu.reader.components.InputField
 import com.maytheu.reader.components.ReaderAPPBar
 import com.maytheu.reader.model.Book
-import com.maytheu.reader.navigation.ReaderScreens
+import com.maytheu.reader.model.Item
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -53,9 +51,9 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
                 SearchForm(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp), viewModel = viewModel
+                        .padding(20.dp),
                 ) { query ->
-                    viewModel.searchBooks(query)
+                    viewModel.updatedSearch(query)
 
                 }
 
@@ -76,27 +74,27 @@ fun BookList(navController: NavController, viewModel: SearchViewModel) {
         Book(title = "test4", notes = "testtest4")
     )
 
-
-    if(viewModel._searchBooks.value.loading==true){
-        Log.d("TAG", "searchBooks: ${viewModel._searchBooks.value.loading.toString()}")
-        CircularProgressIndicator()
-    }else{
-        Log.d("TAG", "searchBooks: ${viewModel._searchBooks.value.data.toString()}")
-
-    }
+    val listOfBooks = viewModel.updateSearchList
 
 
-    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
-        items(items = testBook) { book ->
-            BookRow(book = book, navController)
+    if (viewModel.loading) {
+        LinearProgressIndicator()
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
+            items(items = listOfBooks) { book ->
+                BookRow(book = book, navController)
+            }
         }
     }
 }
 
 @Composable
-fun BookRow(book: Book, navController: NavController) {
+fun BookRow(book: Item, navController: NavController) {
+    val imageUrl = book.volumeInfo.imageLinks.smallThumbnail.ifEmpty {
+        "https://robohash.org/test.jpg"
+    }
     val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current).data("https://robohash.org/test.jpg")
+        model = ImageRequest.Builder(LocalContext.current).data(imageUrl)
             .crossfade(true).size(Size.ORIGINAL).build()
     )
 
@@ -120,9 +118,9 @@ fun BookRow(book: Book, navController: NavController) {
             )
 
             Column() {
-                Text(text = book.title.toString(), overflow = TextOverflow.Ellipsis)
+                Text(text = book.volumeInfo.title.toString(), overflow = TextOverflow.Ellipsis)
                 Text(
-                    text = "Author: ${book.authors}",
+                    text = "Author: ${book.volumeInfo.authors}",
                     overflow = TextOverflow.Clip,
                     style = MaterialTheme.typography.caption
                 )
@@ -140,7 +138,6 @@ fun SearchForm(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
     hint: String = "Search",
-    viewModel: SearchViewModel,
     onSearch: (String) -> Unit = {},
 ) {
     Column() {

@@ -22,33 +22,37 @@ class SearchViewModel @Inject constructor(private val bookRepo: GoogleBooksRepo)
     val _searchBooks: MutableState<Progress<List<Item>, Boolean, Exception>> =
         mutableStateOf(Progress(null, true, Exception("")))
     var updateSearchList: List<Item> by mutableStateOf(listOf())
+    var loading: Boolean by mutableStateOf(true)
 
     init {
-        searchBooks(+"Typescript")
+//        searchBooks("Typescript")
         loadBooks()
     }
 
-    fun loadBooks() {
+    private fun loadBooks() {
         updatedSearch("Android")
     }
 
-    private fun updatedSearch(search: String) {
+    fun updatedSearch(search: String) {
         viewModelScope.launch(Dispatchers.Default) {
             if (search.isEmpty()) return@launch
             try {
                 when (val response = bookRepo.updateSearchTerm(search)) {
                     is DataResource.Success -> {
                         updateSearchList = response.data!!
+                        if (updateSearchList.isNotEmpty()) loading = false
                     }
 
                     is DataResource.Error -> {
+                        loading = false
                         Log.d("TAG", "updatedSearch: Error fetching data")
                     }
                     else -> {
-
+                        loading = false
                     }
                 }
             } catch (e: Exception) {
+                loading = false
                 Log.d("TAG", "updatedSearch: ${e.message}")
             }
         }
