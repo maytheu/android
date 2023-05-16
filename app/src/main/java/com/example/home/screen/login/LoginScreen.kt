@@ -28,11 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.home.component.ImageScreen
 import com.example.home.component.InputField
+import com.example.home.model.LoginData
 import com.example.home.navigation.ParrotScreens
+import com.example.home.screen.login.LoginViewModel
 import com.example.home.widgets.login.InfoArea
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     Surface(
         modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.background
     ) {
@@ -45,9 +47,18 @@ fun LoginScreen(navController: NavController) {
         Column() {
             ImageScreen(300.dp)
 
-            InfoArea(loginId, password){
-                //make network request
-                navController.navigate(route = ParrotScreens.HomeScreen.name)
+            InfoArea(loginId, password) {
+                //TODO make network request
+                val loginData = LoginData(userId = loginId.value, password = password.value)
+                viewModel.loginUser(loginData).run {
+                    Log.d("Login", "LoginScreen: ${viewModel.isUser.value}")
+                    if (viewModel.isUser.value.data == true) {
+                        navController.navigate(route = ParrotScreens.HomeScreen.name)
+                    } else {//TODO show toast
+                        Log.d("Invalid", "LoginScreen: cannot log in")
+                    }
+                }
+
             }
         }
 
