@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.maytheu.reader.screens.SplashScreen
 import com.maytheu.reader.screens.details.BookDetailsScreen
+import com.maytheu.reader.screens.details.BookDetailsViewModel
 import com.maytheu.reader.screens.home.HomeScreen
 import com.maytheu.reader.screens.login.LoginScreen
 import com.maytheu.reader.screens.login.LoginViewModel
@@ -45,13 +46,18 @@ fun ReaderNavigation() {
         }
 
         composable(
-            "${ReaderScreens.BookDetailsScreen.name}/bookId",
+            "${ReaderScreens.BookDetailsScreen.name}/{bookId}",
             arguments = listOf(navArgument("bookId") {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
             backStackEntry.arguments?.getString("bookId").let {
-                BookDetailsScreen(navController = navController, bookId = it.toString())
+                val viewmodel = hiltViewModel<BookDetailsViewModel>()
+                BookDetailsScreen(
+                    navController = navController,
+                    bookId = it.toString(),
+                    viewModel = viewmodel
+                )
             }
         }
 

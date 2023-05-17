@@ -12,6 +12,6 @@ interface GoogleBooksApi {
     @GET("volumes")
     suspend fun getAllBooks(@Query("q") bookQuery: String): GoogleBook
 
-    @GET("volume/{bookId}")
+    @GET("volumes/{bookId}")
     suspend fun getBookInfo(@Path("bookId") bookId: String): Item
 }
