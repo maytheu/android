@@ -80,7 +80,11 @@ fun BookList(navController: NavController, viewModel: SearchViewModel) {
 
 
     if (viewModel.loading) {
-        LinearProgressIndicator()
+        LinearProgressIndicator(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+                .fillMaxWidth()
+        )
     } else {
         LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
             items(items = listOfBooks) { book ->
