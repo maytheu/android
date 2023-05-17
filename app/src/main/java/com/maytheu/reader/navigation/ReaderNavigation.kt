@@ -2,9 +2,11 @@ package com.maytheu.reader.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.maytheu.reader.screens.SplashScreen
 import com.maytheu.reader.screens.details.BookDetailsScreen
 import com.maytheu.reader.screens.home.HomeScreen
@@ -42,8 +44,15 @@ fun ReaderNavigation() {
             SearchScreen(navController = navController, viewModel)
         }
 
-        composable(ReaderScreens.BookDetailsScreen.name) {
-            BookDetailsScreen(navController = navController)
+        composable(
+            "${ReaderScreens.BookDetailsScreen.name}/bookId",
+            arguments = listOf(navArgument("bookId") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("bookId").let {
+                BookDetailsScreen(navController = navController, bookId = it.toString())
+            }
         }
 
 //        composable(ReaderScreens.SignUpScreen.name) {

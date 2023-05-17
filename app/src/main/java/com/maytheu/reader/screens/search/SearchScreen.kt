@@ -33,6 +33,7 @@ import com.maytheu.reader.components.InputField
 import com.maytheu.reader.components.ReaderAPPBar
 import com.maytheu.reader.model.Book
 import com.maytheu.reader.model.Item
+import com.maytheu.reader.navigation.ReaderScreens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -104,9 +105,9 @@ fun BookRow(book: Item, navController: NavController) {
             .padding(3.dp)
             .height(120.dp)
             .fillMaxWidth()
-            .clickable { },
-        shape = RectangleShape,
-        elevation = 6.dp
+            .clickable {
+                navController.navigate("${ReaderScreens.BookDetailsScreen.name}/${book.id}")
+            }, shape = RectangleShape, elevation = 6.dp
     ) {
         Row(modifier = Modifier.padding(5.dp), verticalAlignment = Alignment.Top) {
             Image(
