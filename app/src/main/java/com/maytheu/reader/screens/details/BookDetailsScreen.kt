@@ -25,9 +25,12 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.maytheu.reader.components.CardButtonRounded
 import com.maytheu.reader.components.ReaderAPPBar
 import com.maytheu.reader.data.DataResource
+import com.maytheu.reader.model.Book
 import com.maytheu.reader.model.Item
 import com.maytheu.reader.model.VolumeInfo
 
@@ -90,15 +93,21 @@ fun BookDetails(bookInfo: VolumeInfo, navController: NavController, bookId: Stri
     Spacer(modifier = Modifier.height(15.dp))
     BookDesc(desc = bookInfo.description)
 
-    Row(modifier = Modifier.padding(top = 10.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-        CardButtonRounded(label = "Save"){
+    Row(modifier = Modifier.padding(top = 10.dp), horizontalArrangement = Arrangement.SpaceAround) {
+        CardButtonRounded(label = "Save") {
 
         }
-        CardButtonRounded("Back"){
 
+        Spacer(modifier = Modifier.width(50.dp))
+//save to db
+        val book = Book("1", "", "", "")
+        saveToFirebase(book)
+        CardButtonRounded("Back") {
+            navController.popBackStack()
         }
     }
 }
+
 
 //    }
 
@@ -166,4 +175,10 @@ fun BookImage(image: String) {
                 .padding(2.dp)
         )
     }
+}
+
+
+fun saveToFirebase(book: Book) {
+    val db = FirebaseFirestore.getInstance()
+
 }
