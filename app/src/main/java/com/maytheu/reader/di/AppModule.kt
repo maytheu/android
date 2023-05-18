@@ -2,6 +2,7 @@ package com.maytheu.reader.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maytheu.reader.network.GoogleBooksApi
+import com.maytheu.reader.repository.FireRepository
 import com.maytheu.reader.repository.GoogleBooksRepo
 import com.maytheu.reader.utils.Constants
 import dagger.Module
@@ -22,7 +23,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFireRepository() = FirebaseFirestore.getInstance().collection("books")
+    fun provideFireRepository() = FireRepository(FirebaseFirestore.getInstance().collection("books"))
 
     @Singleton
     @Provides
