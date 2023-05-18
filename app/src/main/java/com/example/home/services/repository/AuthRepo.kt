@@ -1,9 +1,8 @@
 package com.example.home.services.repository
 
-import android.util.Log
 import com.example.home.model.LoginData
 import com.example.home.model.User
-import com.example.home.services.AuthApi
+import com.example.home.services.dao.AuthApi
 import com.example.home.utils.Progress
 import javax.inject.Inject
 

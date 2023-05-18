@@ -37,10 +37,7 @@ class LoginViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel
     }
 
     suspend fun login(data: LoginData): Progress<User, Boolean, Exception> {
-        Log.d("TAG", "login: $data")
-//        if (data.userId != "" && data.password != "") {
         return repo.loginUser(data)
-//        }
     }
 
 }
