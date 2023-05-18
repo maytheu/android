@@ -58,20 +58,23 @@ fun LoginScreen(
                         Log.d("Login", "LoginScreen: ${login.e}")
                         makeRequest.value = false
                     } else {
+                        Log.d("Login", "LoginScreen: ${login.data}")
                         val user = login.data
-                        val userDbData =
-                            user?.let {
-                                UserDb(
-                                    userId = it.userId,
-                                    companyName = it.companyName,
-                                    userCompanyId = it.userCompanyId,
-                                    logo = it.logo
-                                )
-                            }
+                        val userDbData = user?.let {
+                            UserDb(
+                                userId = it.userId,
+                                companyName = it.companyName,
+                                userCompanyId = it.userCompanyId,
+                                logo = it.logo,
+//                                lastName = it.lastName,
+                                firstName = it.firstName
+                            )
+                        }
                         userViewModel.logout()
                         if (userDbData != null) {
                             userViewModel.saveUserToDb(userDbData)
                         }
+                        makeRequest.value = false
                         navController.navigate(route = ParrotScreens.HomeScreen.name)
                     }
                 }

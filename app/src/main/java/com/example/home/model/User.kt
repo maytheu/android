@@ -6,6 +6,7 @@ data class User(
     val countryId: String,
     val creditBalance: String,
     val firstName: String,
+    val lastName: String,
     val logo: String,
     val numActiveDevice: Any,
     val numCorporate: Any,
