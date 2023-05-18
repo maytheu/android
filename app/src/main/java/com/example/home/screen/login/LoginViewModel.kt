@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.home.model.LoginData
+import com.example.home.model.User
 import com.example.home.services.repository.AuthRepo
 import com.example.home.utils.Progress
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +34,13 @@ class LoginViewModel @Inject constructor(private val repo: AuthRepo) : ViewModel
                 //TODO save user data to db
             }
         }
+    }
+
+    suspend fun login(data: LoginData): Progress<User, Boolean, Exception> {
+        Log.d("TAG", "login: $data")
+//        if (data.userId != "" && data.password != "") {
+        return repo.loginUser(data)
+//        }
     }
 
 }

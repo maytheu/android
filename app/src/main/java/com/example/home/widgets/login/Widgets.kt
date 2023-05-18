@@ -35,7 +35,8 @@ import com.example.home.component.ButtonField
 fun InfoArea(
     loginId: MutableState<String>,
     password: MutableState<String>,
-    onLogin: () -> Unit = {}
+    onLoading: Boolean = false,
+    onLogin: () -> Unit = {},
 ) {
     val loginIdValid = remember(loginId.value) {
         loginId.value.trim().isNotEmpty()
@@ -84,6 +85,7 @@ fun InfoArea(
                 onAction = KeyboardActions {
                     if (!passwordValid) return@KeyboardActions
                     keyController?.hide()
+                    onLogin()
                 },
                 visualTransformation = if (!passwordVisibility.value) PasswordVisualTransformation() else VisualTransformation.None
             )
@@ -91,7 +93,7 @@ fun InfoArea(
             Spacer(modifier = Modifier.height(10.dp))
 
             ButtonField(
-                enabled = loginIdValid && passwordValid,
+                enabled = loginIdValid && passwordValid && !onLoading,
                 modifier = Modifier
                     .padding(4.dp)
                     .fillMaxWidth(),
