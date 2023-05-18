@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.maytheu.reader.components.CardButtonRounded
@@ -76,7 +77,8 @@ fun BookDetailsScreen(
                 } else {
                     BookDetails(
                         bookInfo = bookInfo.data?.volumeInfo!!,
-                        navController = navController, bookId = bookId
+                        navController = navController,
+                        bookId = bookId
                     )
 
                 }
@@ -95,13 +97,25 @@ fun BookDetails(bookInfo: VolumeInfo, navController: NavController, bookId: Stri
 
     Row(modifier = Modifier.padding(top = 10.dp), horizontalArrangement = Arrangement.SpaceAround) {
         CardButtonRounded(label = "Save") {
-
+//save to db
+            val book = Book(
+                title = bookInfo.title,
+                authors = bookInfo.authors.toString(),
+                description = bookInfo.description.toString(),
+                categories = bookInfo.categories.toString(),
+                notes = "",
+                photoUrl = bookInfo.imageLinks.thumbnail,
+                pageCount = bookInfo.pageCount.toString(),
+                publishedDate = bookInfo.publishedDate,
+                rating = 0.0,
+                googleBookId = bookId,
+                userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+            )
+            saveToFirebase(book, navController)
         }
 
         Spacer(modifier = Modifier.width(50.dp))
-//save to db
-        val book = Book("1", "", "", "")
-        saveToFirebase(book)
+
         CardButtonRounded("Back") {
             navController.popBackStack()
         }
@@ -178,7 +192,23 @@ fun BookImage(image: String) {
 }
 
 
-fun saveToFirebase(book: Book) {
+fun saveToFirebase(book: Book, navController: NavController) {
     val db = FirebaseFirestore.getInstance()
+    val dbCollection = db.collection("books")
 
+    if (book.toString().isNotEmpty()) {
+        dbCollection.add(book).addOnSuccessListener { docRef ->
+            val docId = docRef.id
+            //update with fb id
+            dbCollection.document(docId).update(hashMapOf("id" to docId) as Map<String, Any>)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Savetodb", "saveToFirebase: successfully saved")
+                        navController.popBackStack()
+                    }
+                }.addOnFailureListener {
+                    Log.w("Savetodb", "saveToFirebase: failed")
+                }
+        }
+    }
 }

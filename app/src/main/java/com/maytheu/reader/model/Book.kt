@@ -20,7 +20,7 @@ data class Book(
     @set:PropertyName("published_date")
     var publishedDate: String? = null,
 
-    var rating: String? = null,
+    var rating: Double? = null,
     var description: String? = null,
 
     @get:PropertyName("page_count")
