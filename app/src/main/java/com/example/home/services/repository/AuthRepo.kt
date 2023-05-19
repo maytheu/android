@@ -12,7 +12,7 @@ This connect to the api
 class AuthRepo @Inject constructor(private val api: AuthApi) {
     private val _loginUserStatus = Progress<User, Boolean, Exception>()
 
-    suspend fun loginUser(data: LoginData): Progress<User, Boolean, java.lang.Exception> {
+    suspend fun loginUser(data: LoginData): Progress<User, Boolean, Exception> {
         try {
             _loginUserStatus.loading = true
             _loginUserStatus.data = api.login(data).response

@@ -3,6 +3,7 @@ package com.example.home.di
 import android.content.Context
 import androidx.room.Room
 import com.example.home.services.SmartHomeDatabase
+import com.example.home.services.dao.AssetApi
 import com.example.home.services.dao.AuthApi
 import com.example.home.services.dao.SmartHomeDao
 import com.example.home.services.repository.AuthRepo
@@ -31,9 +32,9 @@ object AppModule {
             context, SmartHomeDatabase::class.java, "smart_home_db"
         ).fallbackToDestructiveMigration().build()
 
-    @Singleton
-    @Provides
-    fun providesAuthRepo(api: AuthApi) = AuthRepo(api)
+//    @Singleton
+//    @Provides
+//    fun providesAuthRepo(api: AuthApi) = AuthRepo(api)
 
     @Singleton
     @Provides
@@ -41,5 +42,13 @@ object AppModule {
         return Retrofit.Builder().baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(AuthApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAssetApi(): AssetApi {
+        return Retrofit.Builder().baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(AssetApi::class.java)
     }
 }
