@@ -1,8 +1,7 @@
 package com.example.home.navigation
 
 enum class ParrotScreens {
-    LoginScreen, SplashScreen,
-    HomeScreen;
+    LoginScreen, SplashScreen, HomeScreen, FloorScreen, PlanScreen;
 
 //    companion object {
 //        fun fromRoute(route: String?): ParrotScreens =

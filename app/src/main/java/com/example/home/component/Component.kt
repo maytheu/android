@@ -4,6 +4,9 @@ package com.example.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -29,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.home.R
+import com.example.home.screen.AssetCard
 
 //reusable component composable
 @Composable
@@ -116,7 +120,8 @@ fun Layout(
 }
 
 @Composable
-fun ImageScreen(height: Dp) { val modifier =
+fun ImageScreen(height: Dp) {
+    val modifier =
         if (height == 0.0.dp) Modifier.fillMaxSize() else Modifier
             .fillMaxWidth()
             .height(height)
