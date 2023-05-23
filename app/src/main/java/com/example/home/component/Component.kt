@@ -1,6 +1,10 @@
 package com.example.home.component
 
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,10 +16,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -24,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -102,10 +110,8 @@ fun Layout(
 
                 AsyncImage(
                     modifier = Modifier.padding(vertical = 10.dp),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(imageUrl)
-                        .transformations(CircleCropTransformation())
-                        .build(),
+                    model = ImageRequest.Builder(LocalContext.current).data(imageUrl)
+                        .transformations(CircleCropTransformation()).build(),
                     contentDescription = "profile pic"
                 )
 
@@ -143,6 +149,55 @@ fun ImageScreen(height: Dp) {
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFFFFFFF)
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun Expandable(
+    expanded: Boolean = false,
+    title: String = "title",
+    content: @Composable () -> Unit,
+) {
+    var expandedState by remember { mutableStateOf(expanded) }
+    val rotationState by animateFloatAsState(targetValue = if (expandedState) 180f else 0f)
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .animateContentSize(
+            animationSpec = tween(
+                durationMillis = 300,
+                easing = LinearOutSlowInEasing
+            )
+        ), shape = RoundedCornerShape(4.dp), onClick = { expandedState = !expandedState }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.h6.fontSize,
+                    modifier = Modifier.weight(6f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                IconButton(
+                    onClick = { expandedState = !expandedState },
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium)
+                        .weight(1f)
+                        .rotate(rotationState)
+                ) {
+                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "open")
+                }
+            }
+            if (expandedState) {
+                content()
+            }
+
         }
     }
 }

@@ -23,7 +23,7 @@ class AssetRepo @Inject constructor(private val api: AssetApi) {
         companyId: String,
     ): Progress<Response<List<Floor>>, Boolean, Exception> {
         val resp = try {
-            api.loadDevicesOnFloor(assetId, companyId)
+            api.loadDevicesOnFloor(assetId=assetId, companyId=companyId)
         } catch (e: Exception) {
             return Progress(e = e)
         }

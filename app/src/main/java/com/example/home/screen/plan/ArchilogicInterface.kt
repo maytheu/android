@@ -1,4 +1,11 @@
 package com.example.home.screen.plan
 
-class ArchilogicInterface {
+import android.webkit.JavascriptInterface
+
+class ArchilogicInterface(private val callback: () -> Unit) {
+    @JavascriptInterface
+    fun onCallback(data: String) {
+        // Handle the callback data
+        callback.invoke()
+    }
 }

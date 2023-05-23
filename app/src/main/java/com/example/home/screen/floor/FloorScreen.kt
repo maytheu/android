@@ -66,11 +66,10 @@ fun AssetFloors(
             shape = RoundedCornerShape(20.dp),
         ) {
             LazyColumn(
-                modifier = Modifier.padding(2.dp),
-                contentPadding = PaddingValues(1.dp)
+                modifier = Modifier.padding(2.dp), contentPadding = PaddingValues(1.dp)
             ) {
                 items(items = floorViewModel.devices.value.data?.response!!) { floor ->
-                    FloorCard(floor, navController)
+                    FloorCard(floor, navController, assetId, companyId)
                 }
             }
         }
@@ -82,14 +81,17 @@ fun AssetFloors(
 }
 
 @Composable
-fun FloorCard(floor: Floor, navController: NavController) {
+fun FloorCard(floor: Floor, navController: NavController, assetId: String, companyId: String) {
     Surface(
         modifier = Modifier
             .padding(5.dp)
             .fillMaxWidth()
-            .clickable { navController.navigate("${ParrotScreens.PlanScreen.name}/floorId/${floor.floorPlanId}") },
+            .clickable {
+                navController.navigate("${ParrotScreens.PlanScreen.name}/floorId/${floor.floorPlanId}=$assetId")
+            },
         shape = CircleShape.copy(topEnd = CornerSize(10.dp)),
-        color = Color.White, elevation = 5.dp
+        color = Color.White,
+        elevation = 5.dp
     ) {
         Row(
             modifier = Modifier
@@ -101,7 +103,7 @@ fun FloorCard(floor: Floor, navController: NavController) {
             Text(text = floor.floorNumber.toString())
             Text(
                 text = floor.floorName,
-                maxLines = 3,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 10.dp),
                 style = MaterialTheme.typography.subtitle2

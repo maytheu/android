@@ -21,8 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class FloorViewModel @Inject constructor(private val api: AssetRepo) : ViewModel() {
     var loading: Boolean by mutableStateOf(true)
-    val devices: MutableState<Progress<Response<List<Floor>>, Boolean, Exception>> =
+    private val _devices: MutableState<Progress<Response<List<Floor>>, Boolean, Exception>> =
         mutableStateOf(Progress(null, true, Exception("")))
+
+    val devices = _devices
 
 
     fun loadAssetDevices(
@@ -31,9 +33,9 @@ class FloorViewModel @Inject constructor(private val api: AssetRepo) : ViewModel
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (companyId.isEmpty() && assetId.isEmpty()) return@launch
-            devices.value = api.assetDevices(assetId = assetId, companyId)
+            _devices.value = api.assetDevices(assetId = assetId, companyId)
             if (devices.value.data != null) {
-                loading = false
+                _devices.value.loading = false
             }
         }
     }

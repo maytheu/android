@@ -22,6 +22,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,23 +65,33 @@ fun CompanyAssets(user: UserDb, viewModel: HomeViewModel, navController: NavCont
         Log.d("loading", "CompanyAssets: show progress")
     } else {
         if (assets.data != null) {
-            val buildings = assets.data?.response?.filter { asset ->
-                asset.assetType == "Building"
-            }
+            val buildings = assets.data?.response?.filter { asset -> asset.assetType == "Building" }
 
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                color = Color(0xFFEEF1EF),
-                shape = RoundedCornerShape(20.dp),
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LazyColumn(
-                    modifier = Modifier.padding(2.dp),
-                    contentPadding = PaddingValues(1.dp)
+                Text(
+                    text = "${user.companyName} Assets",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(top = 7.dp)
+                )
+
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    color = Color(0xFFEEF1EF),
+                    shape = RoundedCornerShape(20.dp),
                 ) {
-                    items(items = buildings!!) { building ->
-                        AssetCard(building, navController)
+                    LazyColumn(
+                        modifier = Modifier.padding(2.dp),
+                        contentPadding = PaddingValues(1.dp)
+                    ) {
+                        items(items = buildings!!) { building ->
+                            AssetCard(building, navController)
+                        }
                     }
                 }
             }
@@ -130,7 +141,7 @@ fun AssetCard(
                 }
             }
 
-            Spacer(modifier = Modifier.width(100.dp))
+            Spacer(modifier = Modifier.width(50.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
