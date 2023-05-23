@@ -272,7 +272,7 @@ fun FABContent(onTap: () -> Unit) {
 
 @Composable
 fun BookCard(
-    book: Book = Book(id = "1", authors = "me", title = "Potter"),
+    book: Book,
     onPressDetials: (String) -> Unit = {},
 ) {
     //screen size info
@@ -284,7 +284,7 @@ fun BookCard(
     val spacing = 10.dp
 
     val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current).data("https://robohash.org/test.jpg")
+        model = ImageRequest.Builder(LocalContext.current).data(book.photoUrl.toString())
             .crossfade(true).size(Size.ORIGINAL).build()
     )
     Card(

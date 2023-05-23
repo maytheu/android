@@ -30,7 +30,7 @@ fun ReaderNavigation() {
 
         composable(ReaderScreens.HomeScreen.name) {
             val viewModel = hiltViewModel<HomeViewModel>()
-            HomeScreen(navController = navController, viewModel=viewModel)
+            HomeScreen(navController = navController, viewModel = viewModel)
         }
 
         composable(ReaderScreens.LoginScreen.name) {
@@ -38,8 +38,21 @@ fun ReaderNavigation() {
             LoginScreen(navController = navController, loginViewModel = viewModel)
         }
 
-        composable(ReaderScreens.UpdateScreen.name) {
-            UpdateScreen(navController = navController)
+        composable(
+            "${ReaderScreens.UpdateScreen.name}/{bookItemId}",
+            arguments = listOf(navArgument("bookItemId") {
+                type = NavType.StringType
+            })
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getString("bookItemId").let {
+                val viewModel = hiltViewModel<HomeViewModel>()
+                UpdateScreen(
+                    navController = navController,
+                    bookItemId = it.toString(),
+                    viewmodel = viewModel
+                )
+
+            }
         }
 
         composable(ReaderScreens.SearchScreen.name) {

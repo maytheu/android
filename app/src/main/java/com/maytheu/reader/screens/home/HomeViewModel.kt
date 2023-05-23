@@ -18,11 +18,14 @@ class HomeViewModel @Inject constructor(private val fireRepo: FireRepository) : 
         mutableStateOf(Progress(listOf(), false, Exception("")))
 
     init {
+getBooksFromDb()
+    }
+
+     fun getBooksFromDb() {
         viewModelScope.launch {
             books.value.loading = true
             books.value = fireRepo.getAllBookDb()
             if (!books.value.data.isNullOrEmpty()) books.value.loading = false
         }
-        Log.d("bookview model", "${books.value}: ")
     }
 }

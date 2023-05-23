@@ -107,7 +107,7 @@ fun HomeContent(
 @Composable
 fun BookListArea(listOfBooks: List<Book>, navController: NavController) {
     HorizontalBookScroll(listOfBooks = listOfBooks) {
-        navController.navigate("${ReaderScreens.BookDetailsScreen.name}/$it")
+        navController.navigate("${ReaderScreens.UpdateScreen.name}/$it")
     }
 }
 
@@ -123,7 +123,7 @@ fun HorizontalBookScroll(listOfBooks: List<Book>, onBookPressed: (String) -> Uni
         //show all books by looping
         for (book in listOfBooks) {
             BookCard(book = book) {
-                onBookPressed(it)
+                onBookPressed(book.googleBookId.toString())
             }
 
         }
@@ -132,7 +132,7 @@ fun HorizontalBookScroll(listOfBooks: List<Book>, onBookPressed: (String) -> Uni
 
 @Composable
 fun ReadingArea(book: List<Book>, navController: NavController) {
-    BookCard()
+//    BookCard(book)
 
 }
 
