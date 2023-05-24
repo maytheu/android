@@ -2,18 +2,26 @@ package com.maytheu.reader.screens.update
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -21,6 +29,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.maytheu.reader.components.CardButtonRounded
+import com.maytheu.reader.components.InputField
+import com.maytheu.reader.components.RatingBar
 import com.maytheu.reader.components.ReaderAPPBar
 import com.maytheu.reader.data.Progress
 import com.maytheu.reader.model.Book
@@ -84,9 +95,128 @@ fun UpdateScreen(
                         ShowBookUpdate(bookInfo = bookInfo, bookItemId)
 //                        }
                     }
+
+                    showSimpleForm(
+                        book = bookInfo.data!!.first { bk -> bk.googleBookId == bookItemId },
+                        navController
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun showSimpleForm(book: Book, navController: NavController) {
+    val noteTextVal = remember {
+        mutableStateOf("")
+    }
+    val isStartReading = remember {
+        mutableStateOf(false)
+    }
+    val isFinishReading = remember {
+        mutableStateOf(false)
+    }
+    val ratingValue = remember {
+        mutableStateOf(0)
+    }
+
+    SimpleForm(
+        defaultValue = if (book.notes.toString()
+                .isNotEmpty()
+        ) book.notes.toString() else "No Thoughts available"
+    ) { note ->
+        noteTextVal.value = note
+    }
+
+    Row(
+        modifier = Modifier.padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        TextButton(
+            onClick = { isStartReading.value = true },
+            enabled = book.startedReading == null
+        ) {
+            if (book.startedReading == null) { //book return null from db
+                if (!isStartReading.value) {
+                    Text(text = "Start Reading")
+                } else {
+                    Text(
+                        text = "Started Reading",
+                        modifier = Modifier.alpha(0.6f),
+                        color = Color.Red.copy(alpha = 0.5f)
+                    )
+                }
+            } else {
+                Text(text = "Started: ${book.startedReading}")
+            }
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+
+        TextButton(
+            onClick = { isFinishReading.value = true },
+            enabled = book.finishedReading == null
+        ) {
+            if (book.finishedReading == null) {
+                if (!isFinishReading.value) {
+                    Text(text = "Mark as Read")
+                } else {
+                    Text(text = "Finished Reading")
+                }
+            } else {
+                Text(text = "Finished onn: ${book.finishedReading}")
+            }
+        }
+    }
+
+    Text(text = "Ratins", modifier = Modifier.padding(5.dp))
+    book.rating?.toInt().let {
+        RatingBar(rating = it!!) { rate ->
+            ratingValue.value = rate
+        }
+    }
+
+    Row(modifier = Modifier.padding(top = 10.dp)){
+        CardButtonRounded(label = "Update"){}
+
+        Spacer(modifier = Modifier.width(50.dp))
+
+        CardButtonRounded(label = "Delete"){}
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun SimpleForm(
+    modifier: Modifier = Modifier,
+    loading: Boolean = false,
+    defaultValue: String = "Great Book",
+    onSearch: (String) -> Unit = {},
+) {
+    Column() {
+        val textFieldVal = remember {
+            mutableStateOf(defaultValue)
+        }
+        val keyboardCtrl = LocalSoftwareKeyboardController.current
+        val valid = remember(textFieldVal.value) {
+            textFieldVal.value.trim().isNotEmpty()
+        }
+
+        InputField(modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(5.dp)
+            .background(Color.White, CircleShape)
+            .padding(horizontal = 20.dp, vertical = 15.dp),
+            valueState = textFieldVal,
+            label = "Your thoughts",
+            enabled = true,
+            onAction = KeyboardActions {
+                if (!valid) return@KeyboardActions
+                onSearch(textFieldVal.value.trim())
+                keyboardCtrl?.hide()
+            })
     }
 }
 
