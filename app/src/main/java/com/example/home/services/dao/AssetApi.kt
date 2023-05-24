@@ -1,7 +1,9 @@
 package com.example.home.services.dao
 
 import com.example.home.model.*
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import javax.inject.Singleton
 
@@ -28,5 +30,8 @@ interface AssetApi {
         @Path("startDate") startDate: String,
         @Path("endDate") endDate: String,
     ): Response<LastStatus>
+
+    @POST("setup/archilogic/get-access-token")
+    suspend fun tempToken(): Response<TempKey>
 
 }
