@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">reader</string>
+    <string name="action">This action is not reversible</string>
 </resources>
