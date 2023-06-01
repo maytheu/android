@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPE SDK Example</title>
+<script src="file:///android_asset/floor.js"></script>
+<style>
+    #hello-plan {
+      height: 100%;
+    }
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+.marker--blue,
+    .marker--red {
+      border-radius: 50%;
+      background-image: url(https://picsum.photos/id/101/30);
+      background-size: 30px;
+      height: 30px;
+      width: 30px;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: opacity 0.2s;
+    }
+
+
+</style>
+<body>
+<div id="hello-plan"></div>
+<script>
+ function loadFpeSdk(floorId, token, devices, paths) {
+      const container = document.getElementById('hello-plan')
+
+      const floorPlanStartupSettings = {
+            hideElements: ["roomStamp"],
+            panZoom: false,
+            planRotation: 0,
+            roomStampSize: null,
+            ui: {
+              menu: false,
+              scale: false,
+              coordinates: false,
+            },
+            theme: {
+              background: {
+                color: "#f3f5f8",
+                showGrid: false,
+              },
+              wallContours: false,
+              elements: {
+                roomstamp: { showArea: false },
+                asset: { fill: [255, 255, 255] },
+              },
+            },
+            units: {
+              system: "metric",
+              digits: 0,
+              roomDimensions: "area",
+            },
+          };
+
+         const floorPlan = new FloorPlanEngine(container, floorPlanStartupSettings)
+
+      console.log(devices)
+
+      const d =  '[{ "lat": "1.321990426435309", "lng": "0.954638094821219", "notification": "Y", "svg": "M0,36V33H4V3A2.88,2.88,0,0,1,4.9.9,2.88,2.88,0,0,1,7,0H29a2.88,2.88,0,0,1,2.1.9A2.88,2.88,0,0,1,32,3V33h4v3Zm29-3V3H7V33ZM22.35,19.55a1.71,1.71,0,1,0-1.2-.5A1.64,1.64,0,0,0,22.35,19.55Z*M16,19a1.44,1.44,0,0,0,1.08-.45A1.51,1.51,0,0,0,15,16.42,1.52,1.52,0,0,0,16,19ZM7,35.5v-3l14-2.45V6.75a2,2,0,0,0-.38-1.22,1.48,1.48,0,0,0-1-.63L7,3V0L20.3,2.3A4.16,4.16,0,0,1,23,3.82,4.43,4.43,0,0,1,24,6.7V32.5Zm-7,0v-3H4V3A2.85,2.85,0,0,1,4.88.85,2.91,2.91,0,0,1,7,0H29a2.91,2.91,0,0,1,3,3V32.5h4v3Zm7-3H29V3L7,3Z", "id": "DE2Gy497NZD5nSMTK", "name": "Main Entrance Door" }]';
+
+      const floorDevices = JSON.parse(d);
+
+      floorPlan.loadScene(floorId, { authorization:token })
+      .then(()=>{
+        floorDevices.forEach((dev, i) => {
+            const svg = createSvg(dev.svg, dev.notification);
+             svg.setAttribute("title", dev.id);
+
+             const iconDiv = document.createElement("div");
+            iconDiv.appendChild(svg);
+            iconDiv.classList.add("draggable");
+            iconDiv.setAttribute("draggable", "true");
+            iconDiv.setAttribute("title", dev.name);
+
+            floorPlan.addHtmlMarker({
+            el:iconDiv,
+            pos:[+dev.lat, +dev.lng],
+            })
+         })
+        })
+  }
+
+   function createSvg(svgPath, alertStatus) {
+    var splitPath = svgPath?.split("*");
+
+    const iconSvg = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    const iconPath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    iconSvg.setAttribute("height", "24");
+    iconSvg.setAttribute("width", "24");
+    iconSvg.classList.add("draggable");
+    if (alertStatus === "Y") {
+      iconPath.setAttribute("fill", "none");
+      iconPath.setAttribute("stroke", "red");
+      iconPath.setAttribute("class", "animate");
+      if (splitPath.length > 1) iconPath.setAttribute("d", splitPath[1]);
+      else iconPath.setAttribute("d", splitPath[0]);
+    } else {
+      iconPath.setAttribute("stroke", "blue");
+      iconPath.setAttribute("d", splitPath[0]);
+    }
+    iconSvg.appendChild(iconPath);
+    return iconSvg;
+  }
+
+window.addEventListener('DOMContentLoaded', loadFpeSdk);
+
+
+</script>
+</body>
+</html>
