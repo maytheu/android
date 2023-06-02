@@ -39,4 +39,15 @@ class AssetRepo @Inject constructor(private val api: AssetApi) {
         }
         return _tempToken
     }
+
+    suspend fun lastDeviceStatus(deviceId: String): Progress<Response<LastStatus>, Boolean, Exception> {
+        val resp = try {
+            api.latestDeviceStatus(deviceId)
+        } catch (e:Exception) {
+            return Progress(e = e)
+        }
+        return Progress(resp)
+    }
+
+
 }

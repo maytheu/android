@@ -291,8 +291,6 @@ fun LoadFpeSdk(
 ) {
     val token = key.replace("+", "PARROT")
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-
 
     AndroidView(
         factory = {
@@ -374,8 +372,6 @@ fun LoadFpeSdk(
 class FloorNavInterface(private val navController: NavController) {
     @JavascriptInterface
     fun deviceDetailsScreen(deviceId: String) {
-
-        Log.d("TAG", "navigateToAnotherPage: $deviceId")
         val activity = navController.context as? Activity
         activity?.runOnUiThread{
             navController.navigate("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/${deviceId}")

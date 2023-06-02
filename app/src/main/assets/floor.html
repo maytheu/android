@@ -84,7 +84,7 @@
 
             deviceIcon.el.addEventListener('click', (evt) => {
               if (dev.id === evt.target.attributes.title?.value)
-                Android.deviceDetailsScreen(dev.id);
+                Android.deviceDetailsScreen(dev.id+'='+dev.name);
             });
          })
         })
