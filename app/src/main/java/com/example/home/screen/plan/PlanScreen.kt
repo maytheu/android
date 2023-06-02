@@ -1,11 +1,10 @@
 package com.example.home.screen.plan
 
+import android.app.Activity
 import android.graphics.Bitmap
-import android.graphics.Path.FillType
 import android.util.Log
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,14 +15,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.PathParser
 import androidx.navigation.NavController
 import com.example.home.component.Expandable
 import com.example.home.component.Layout
@@ -31,11 +28,10 @@ import com.example.home.model.Attribute
 import com.example.home.model.Device
 import com.example.home.model.TempKey
 import com.example.home.model.UserDb
+import com.example.home.navigation.ParrotScreens
 import com.example.home.screen.floor.FloorViewModel
 import com.example.home.screen.home.HomeViewModel
 import com.example.home.utils.Progress
-import com.google.gson.JsonArray
-import org.json.JSONArray
 
 @Composable
 fun PlanScreen(
@@ -295,96 +291,103 @@ fun LoadFpeSdk(
 ) {
     val token = key.replace("+", "PARROT")
     val context = LocalContext.current
-
-    AndroidView(factory = {
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            webViewClient = WebViewClient()
-            // to play video on a web view
-            settings.javaScriptEnabled = true
-
-            // to verify that the client requesting your web page is actually your Android app.
-            settings.userAgentString =
-                System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
-
-            settings.useWideViewPort = true
-
-            // Bind JavaScript code to Android code
-            addJavascriptInterface(FloorNavInterface(navController), "Android")
+    val lifecycleOwner = LocalLifecycleOwner.current
 
 
-            webViewClient = object : WebViewClient() {
-                override fun onReceivedError(
-                    view: WebView?,
-                    request: WebResourceRequest?,
-                    error: WebResourceError?,
-                ) {
-                    super.onReceivedError(view, request, error)
-                    Log.d("test001", "error")
-                }
+    AndroidView(
+        factory = {
+            WebView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                )
 
-                override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
-                    sdkLoadingState.value = true
+                webViewClient = WebViewClient()
+                // to play video on a web view
+                settings.javaScriptEnabled = true
+
+                // to verify that the client requesting your web page is actually your Android app.
+                settings.userAgentString =
+                    System.getProperty("http.agent") //Dalvik/2.1.0 (Linux; U; Android 11; M2012K11I Build/RKQ1.201112.002)
+
+//                settings.useWideViewPort = true
+
+                // Bind JavaScript code to Android code
+                addJavascriptInterface(FloorNavInterface(navController), "Android")
+
+
+                webViewClient = object : WebViewClient() {
+                    override fun onReceivedError(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                        error: WebResourceError?,
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        Log.d("test001", "error")
+                    }
+
+                    override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+                        sdkLoadingState.value = true
 //                    openFullDialogCustom.value = true
 //                    backEnabled = view.canGoBack()
-                    Log.d("TAG", "onPageStarted: paget started loading")
-                }
-
-                // Compose WebView Part 7 | Hide elements from web view
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    Log.d("TAG", "onPageFinished: page finishe")
-                    super.onPageFinished(view, url)
-
-                    val devicesPos = devices.map { device ->
-                        "{ \"lat\": \"${device.position.lat}\", " +
-                                "\"lng\": \"${device.position.lng}\", " +
-                                "\"notification\": \"${device.notificationDue}\", " +
-                                " \"id\": \"${device.deviceId}\", " +
-                                "\"name\": \"${device.deviceName}\", " +
-                                "\"svg\": \"${device.sensorIcon}\" }"
+                        Log.d("TAG", "onPageStarted: paget started loading")
                     }
-                    val deviceStr = "[${devicesPos.joinToString(",")}]"
 
-                    Log.d("TAG", "onPageFinished: $deviceStr")
+                    // Compose WebView Part 7 | Hide elements from web view
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        Log.d("TAG", "onPageFinished: page finishe")
+                        super.onPageFinished(view, url)
 
-                    evaluateJavascript(
-                        "loadFpeSdk('$floorPlanId', '$key', '$deviceStr')", null
-                    )
-                    sdkLoadingState.value = false
+                        val devicesPos = devices.map { device ->
+                            "{ \"lat\": \"${device.position.lat}\", " + "\"lng\": \"${device.position.lng}\", " + "\"notification\": \"${device.notificationDue}\", " + " \"id\": \"${device.deviceId}\", " + "\"name\": \"${device.deviceName}\", " + "\"svg\": \"${device.sensorIcon}\" }"
+                        }
+                        val deviceStr = "[${devicesPos.joinToString(",")}]"
+
+                        Log.d("TAG", "onPageFinished: $deviceStr")
+
+                        evaluateJavascript(
+                            "loadFpeSdk('$floorPlanId', '$key', '$deviceStr')", null
+                        )
+                        sdkLoadingState.value = false
 
 
 //                    FloorPlanCallback
 //                    openFullDialogCustom.value = false
 //                    removeElement(view!!)
+                    }
+
+
                 }
+
+                loadUrl("file:///android_asset/floor.html")
 
 
             }
-
-            loadUrl("file:///android_asset/floor.html")
-
-
-        }
-    })
+        },
+    )
 
     if (sdkLoadingState.value) {
         CircularProgressIndicator()
     }
 }
 
+//interact with js when icon clicked
 class FloorNavInterface(private val navController: NavController) {
     @JavascriptInterface
-    fun navigateToAnotherPage(floorId: String) {
-        // Perform navigation using the NavController
-//        navController.navigate("destination2")
-        Log.d("TAG", "navigateToAnotherPage: $floorId")
+    fun deviceDetailsScreen(deviceId: String) {
+
+        Log.d("TAG", "navigateToAnotherPage: $deviceId")
+        val activity = navController.context as? Activity
+        activity?.runOnUiThread{
+            navController.navigate("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/${deviceId}")
+        }
     }
 
 }
 
+@Composable
+fun onNavigateToDetailScreen(deviceId: String, navController: NavController) {
+
+}
 
 
 

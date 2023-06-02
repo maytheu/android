@@ -11,6 +11,8 @@ import com.example.home.screen.FloorScreen
 import com.example.home.screen.HomeScreen
 import com.example.home.screen.LoginScreen
 import com.example.home.screen.SplashScreen
+import com.example.home.screen.details.DeviceDetails
+import com.example.home.screen.details.DeviceDetailsViewModel
 import com.example.home.screen.floor.FloorViewModel
 import com.example.home.screen.home.HomeViewModel
 import com.example.home.screen.login.LoginViewModel
@@ -73,6 +75,23 @@ fun ParrotNavigation() {
                     homeViewModel = homeViewModel,
                     floorViewModel = floorViewModel,
                     planViewModel = planViewModel
+                )
+            }
+        }
+
+        composable("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/{deviceId}", arguments = listOf(
+            navArgument("deviceId") {
+                type = NavType.StringType
+            }
+        )) { navBackStackEntry ->
+            navBackStackEntry.arguments?.getString("deviceId").let {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                val deviceDetailsViewModel = hiltViewModel<DeviceDetailsViewModel>()
+                DeviceDetails(
+                    deviceId = it.toString(),
+                    homeViewModel = homeViewModel,
+                    navController = navController,
+                    deviceDetailsViewModel = deviceDetailsViewModel
                 )
             }
         }

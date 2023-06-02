@@ -39,7 +39,7 @@ fun SplashScreen(navController: NavController, viewModel: HomeViewModel) {
         if (checkUser.value.isNullOrEmpty()) {
             navController.navigate(ParrotScreens.LoginScreen.name)
         } else {
-            navController.navigate((ParrotScreens.HomeScreen.name))
+            navController.navigate(ParrotScreens.HomeScreen.name)
         }
     })
 
