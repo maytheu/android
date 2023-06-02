@@ -75,7 +75,10 @@ fun ShowDevicesOnFloor(
     } else {
         val devices =
             floorViewModel.devices.value.data?.response?.filter { d -> d.floorPlanId == urlParams[0] }
-        DeviceCard(devices?.get(0)?.devices!!, floorId = urlParams[0], planViewModel, navController)
+        //filter devices with no position
+        val devicesWitPos =
+            devices?.get(0)?.devices!!.filter { dev -> dev.position.lat != "null" && dev.position.lng != "null" && dev.position.lat != null && dev.position.lng != null }
+        DeviceCard(devicesWitPos, floorId = urlParams[0], planViewModel, navController)
     }
 
 }
@@ -104,14 +107,13 @@ fun DeviceCard(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(phoneDims.heightPixels.dp.times(0.15f)),
+                    .height(phoneDims.heightPixels.dp.times(0.35f)),
                 color = Color(0xFFEEF1EF),
                 shape = RoundedCornerShape(20.dp),
             ) {
                 if (tempKey.loading == true) {
                     Log.d("TAG", "DeviceCard: loading")
                 } else {
-//                    ArchilogicSdk(floorId, key = tempKey.data?.authorization!!)
                     LoadFpeSdk(
                         floorPlanId = floorId,
                         key = tempKey.data?.authorization!!,
@@ -124,21 +126,21 @@ fun DeviceCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                color = Color(0xFFEEF1EF),
-                shape = RoundedCornerShape(20.dp),
-            ) {
-                LazyColumn(
-                    modifier = Modifier.padding(2.dp), contentPadding = PaddingValues(1.dp)
-                ) {
-                    items(items = devices) { device ->
-                        DeviceExpandableCard(device)
-                    }
-                }
-            }
+//            Surface(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .fillMaxHeight(),
+//                color = Color(0xFFEEF1EF),
+//                shape = RoundedCornerShape(20.dp),
+//            ) {
+//                LazyColumn(
+//                    modifier = Modifier.padding(2.dp), contentPadding = PaddingValues(1.dp)
+//                ) {
+//                    items(items = devices) { device ->
+//                        DeviceExpandableCard(device)
+//                    }
+//                }
+//            }
         }
     }
 
@@ -311,7 +313,7 @@ fun LoadFpeSdk(
             settings.useWideViewPort = true
 
             // Bind JavaScript code to Android code
-//            addJavascriptInterface(FloorPlanCallback(), "Android")
+            addJavascriptInterface(FloorNavInterface(navController), "Android")
 
 
             webViewClient = object : WebViewClient() {
@@ -341,19 +343,18 @@ fun LoadFpeSdk(
                                 "\"lng\": \"${device.position.lng}\", " +
                                 "\"notification\": \"${device.notificationDue}\", " +
                                 " \"id\": \"${device.deviceId}\", " +
-                                "\"svg\": \"${device.sensorIcon}\"," +
-                                "\"name\":${device.deviceName} }"
+                                "\"name\": \"${device.deviceName}\", " +
+                                "\"svg\": \"${device.sensorIcon}\" }"
                     }
                     val deviceStr = "[${devicesPos.joinToString(",")}]"
-                    val sensorIcons = devices.map { svg -> svg.sensorIcon }
-//                    val sensorIconsStr =
 
-                        Log.d("TAG", "onPageFinished: $deviceStr")
+                    Log.d("TAG", "onPageFinished: $deviceStr")
 
                     evaluateJavascript(
-                        "loadFpeSdk('$floorPlanId', '$key', '$deviceStr', '$sensorIcons')", null
+                        "loadFpeSdk('$floorPlanId', '$key', '$deviceStr')", null
                     )
                     sdkLoadingState.value = false
+
 
 //                    FloorPlanCallback
 //                    openFullDialogCustom.value = false
@@ -372,6 +373,16 @@ fun LoadFpeSdk(
     if (sdkLoadingState.value) {
         CircularProgressIndicator()
     }
+}
+
+class FloorNavInterface(private val navController: NavController) {
+    @JavascriptInterface
+    fun navigateToAnotherPage(floorId: String) {
+        // Perform navigation using the NavController
+//        navController.navigate("destination2")
+        Log.d("TAG", "navigateToAnotherPage: $floorId")
+    }
+
 }
 
 
