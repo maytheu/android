@@ -368,11 +368,17 @@ fun BookCard(
 
         }
 
+        val isStartedReading = remember { mutableStateOf(false) }
+
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom
         ) {
-            CardButtonRounded(radius = 70)
+            isStartedReading.value = book.startedReading != null
+            CardButtonRounded(
+                radius = 70,
+                label = if (isStartedReading.value) "Reading" else "Not Started"
+            )
         }
     }
 

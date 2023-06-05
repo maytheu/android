@@ -1,6 +1,7 @@
 package com.maytheu.reader.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,7 +66,7 @@ fun HomeContent(
 
     if (!viewModel.books.value.data.isNullOrEmpty()) {
         books = viewModel.books.value.data!!.toList().filter { book ->
-           //filter all books from db based on user
+            //filter all books from db based on user
             book.userId == user?.uid.toString()
         }
     }
@@ -97,22 +100,29 @@ fun HomeContent(
 
             }
         }
-        ReadingArea(book = listOf(), navController = navController)
+        ReadingArea(book = listOf(), navController = navController, viewModel)
 
         TitleSection(label = "Reading list")
-        BookListArea(listOfBooks = books, navController = navController)
+        BookListArea(listOfBooks = books, navController = navController, viewModel)
     }
 }
 
 @Composable
-fun BookListArea(listOfBooks: List<Book>, navController: NavController) {
-    HorizontalBookScroll(listOfBooks = listOfBooks) {
+fun BookListArea(listOfBooks: List<Book>, navController: NavController, viewModel: HomeViewModel) {
+    val addedBooks =
+        listOfBooks.filter { book -> book.startedReading == null && book.finishedReading == null }
+
+    HorizontalBookScroll(listOfBooks = addedBooks, viewModel) {
         navController.navigate("${ReaderScreens.UpdateScreen.name}/$it")
     }
 }
 
 @Composable
-fun HorizontalBookScroll(listOfBooks: List<Book>, onBookPressed: (String) -> Unit) {
+fun HorizontalBookScroll(
+    listOfBooks: List<Book>,
+    viewModel: HomeViewModel,
+    onBookPressed: (String) -> Unit,
+) {
     val scrollState = rememberScrollState()
     Row(
         modifier = Modifier
@@ -120,20 +130,40 @@ fun HorizontalBookScroll(listOfBooks: List<Book>, onBookPressed: (String) -> Uni
             .heightIn(300.dp)
             .horizontalScroll(scrollState)
     ) {
-        //show all books by looping
-        for (book in listOfBooks) {
-            BookCard(book = book) {
-                onBookPressed(book.googleBookId.toString())
-            }
+        if (viewModel.books.value.loading == true) {
+            LinearProgressIndicator()
+        } else {
+            if (listOfBooks.isNullOrEmpty()) {
+                Surface(modifier = Modifier.padding(25.dp)) {
+                    Text(
+                        text = "No books found", style = TextStyle(
+                            color = Color.Red.copy(alpha = 0.4f),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp
+                        )
+                    )
+                }
+            } else {
+                //show all books by looping
+                for (book in listOfBooks) {
+                    BookCard(book = book) {
+                        onBookPressed(book.googleBookId.toString())
+                    }
 
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ReadingArea(book: List<Book>, navController: NavController) {
-//    BookCard(book)
-
+fun ReadingArea(book: List<Book>, navController: NavController, viewModel: HomeViewModel) {
+    val readingNow = book.filter {
+        it.startedReading != null && it.finishedReading == null
+    }
+    HorizontalBookScroll(listOfBooks = readingNow, viewModel = viewModel) {
+        navController.navigate("${ReaderScreens.UpdateScreen.name}/$it")
+    }
 }
 
 

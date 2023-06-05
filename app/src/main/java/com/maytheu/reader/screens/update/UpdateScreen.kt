@@ -200,7 +200,7 @@ fun showSimpleForm(book: Book, navController: NavController) {
                 FirebaseFirestore.getInstance().collection("books").document(book.id!!)
                     .update(bookToUpdate).addOnCompleteListener { task ->
                         showToast(context, "Book updated successfully")
-                        navController.popBackStack()
+                        navController.navigate(ReaderScreens.HomeScreen.name)
                     }.addOnFailureListener {
                         showToast(context, "Error updating book")
                     }

@@ -34,6 +34,7 @@ import com.maytheu.reader.data.DataResource
 import com.maytheu.reader.model.Book
 import com.maytheu.reader.model.Item
 import com.maytheu.reader.model.VolumeInfo
+import com.maytheu.reader.navigation.ReaderScreens
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -204,7 +205,7 @@ fun saveToFirebase(book: Book, navController: NavController) {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d("Savetodb", "saveToFirebase: successfully saved")
-                        navController.popBackStack()
+                        navController.navigate(ReaderScreens.HomeScreen.name)
                     }
                 }.addOnFailureListener {
                     Log.w("Savetodb", "saveToFirebase: failed")
