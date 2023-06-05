@@ -11,11 +11,16 @@ import com.example.home.screen.FloorScreen
 import com.example.home.screen.HomeScreen
 import com.example.home.screen.LoginScreen
 import com.example.home.screen.SplashScreen
+import com.example.home.screen.chart.ChartViewModel
+import com.example.home.screen.chart.StaticChartScreen
+import com.example.home.screen.chart.SummarizedChart
 import com.example.home.screen.details.DeviceDetails
 import com.example.home.screen.details.DeviceDetailsViewModel
 import com.example.home.screen.floor.FloorViewModel
 import com.example.home.screen.home.HomeViewModel
 import com.example.home.screen.login.LoginViewModel
+import com.example.home.screen.logs.LogsScreen
+import com.example.home.screen.logs.LogsViewModel
 import com.example.home.screen.plan.PlanScreen
 import com.example.home.screen.plan.PlanViewModel
 
@@ -79,11 +84,12 @@ fun ParrotNavigation() {
             }
         }
 
-        composable("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/{deviceId}", arguments = listOf(
-            navArgument("deviceId") {
-                type = NavType.StringType
-            }
-        )) { navBackStackEntry ->
+        composable("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/{deviceId}",
+            arguments = listOf(
+                navArgument("deviceId") {
+                    type = NavType.StringType
+                }
+            )) { navBackStackEntry ->
             navBackStackEntry.arguments?.getString("deviceId").let {
                 val homeViewModel = hiltViewModel<HomeViewModel>()
                 val deviceDetailsViewModel = hiltViewModel<DeviceDetailsViewModel>()
@@ -92,6 +98,60 @@ fun ParrotNavigation() {
                     homeViewModel = homeViewModel,
                     navController = navController,
                     deviceDetailsViewModel = deviceDetailsViewModel
+                )
+            }
+        }
+
+        composable(
+            "${ParrotScreens.DeviceLogScreen.name}/deviceId/{deviceId}",
+            arguments = listOf(navArgument("deviceId") {
+                type = NavType.StringType
+            })
+        ) { navBackStackEntry ->
+            navBackStackEntry.arguments?.getString("deviceId").let {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                val logsViewModel = hiltViewModel<LogsViewModel>()
+                LogsScreen(
+                    homeViewModel = homeViewModel,
+                    logsViewModel = logsViewModel,
+                    deviceId = it.toString(),
+                    navController = navController,
+                )
+            }
+        }
+
+        composable(
+            "${ParrotScreens.StaticChartScreen.name}/deviceId/{deviceId}",
+            arguments = listOf(navArgument("deviceId") {
+                type = NavType.StringType
+            })
+        ) { navBackStackEntry ->
+            navBackStackEntry.arguments?.getString("deviceId").let {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                val chartViewModel = hiltViewModel<ChartViewModel>()
+                StaticChartScreen(
+                    homeViewModel = homeViewModel,
+                    chartViewModel = chartViewModel,
+                    deviceId = it.toString(),
+                    navController = navController,
+                )
+            }
+        }
+
+        composable(
+            "${ParrotScreens.SummarizedChartScreen.name}/deviceId/{deviceId}",
+            arguments = listOf(navArgument("deviceId") {
+                type = NavType.StringType
+            })
+        ) { navBackStackEntry ->
+            navBackStackEntry.arguments?.getString("deviceId").let {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                val chartViewModel = hiltViewModel<ChartViewModel>()
+                SummarizedChart(
+                    homeViewModel = homeViewModel,
+                    chartViewModel = chartViewModel,
+                    deviceId = it.toString(),
+                    navController = navController,
                 )
             }
         }

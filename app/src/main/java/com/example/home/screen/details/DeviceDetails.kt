@@ -11,8 +11,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.InsertChart
-import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.outlined.InsertChart
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.PieChart
@@ -21,22 +19,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.home.component.Layout
 import com.example.home.model.DataGroupAttribute
-import com.example.home.model.DeviceLog
 import com.example.home.model.LastStatus
 import com.example.home.model.Response
+import com.example.home.navigation.ParrotScreens
 import com.example.home.screen.home.HomeViewModel
-import com.example.home.screen.plan.ShowDevicesOnFloor
 import com.example.home.utils.Progress
 import com.example.home.utils.deviceAttr
-import com.example.home.utils.statusIcon
 
 @Composable
 fun DeviceDetails(
@@ -114,7 +110,10 @@ fun Details(
                     }
                 }
 
-                ChartMenu()
+                ChartMenu(
+                    deviceId = lastStatus.data?.response!!.deviceId!!,
+                    navController = navController
+                )
             }
 
         }
@@ -136,7 +135,7 @@ fun DevicesInfo(data: DataGroupAttribute) {
 }
 
 @Composable
-fun ChartMenu() {
+fun ChartMenu(navController: NavController, deviceId: String) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,73 +147,92 @@ fun ChartMenu() {
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = "Device logs",
-                        modifier = Modifier
-                            .padding(bottom = 3.dp)
-                            .size(60.dp)
-                    )
-                    Text(text = "Device Logs", fontSize = 14.sp)
-                }
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier =
-                    Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.InsertChart,
-                        contentDescription = "Chart",
-                        modifier = Modifier
-                            .padding(bottom = 3.dp)
-                            .size(60.dp)
-                            .clickable { })
-                    Text(text = "Static Charts", fontSize = 14.sp)
-                }
+                DeviceDetailsPage(
+                    deviceId = deviceId,
+                    text = "Device logs",
+                    icons = Icons.Default.History,
+                    navController = navController,
+                    screen = ParrotScreens.DeviceLogScreen.name,
+                    modifier = Modifier.weight(1f)
+                )
+                DeviceDetailsPage(
+                    deviceId = deviceId,
+                    text = "Time Series Chart",
+                    icons = Icons.Outlined.InsertChart,
+                    navController = navController,
+                    screen = ParrotScreens.SummarizedChartScreen.name,
+                    modifier = Modifier.weight(1f)
+                )
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp)
             ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PieChart,
-                        contentDescription = "Gauge",
-                        modifier = Modifier
-                            .padding(bottom = 3.dp)
-                            .size(60.dp)
-                    )
-                    Text(text = "Gauge", fontSize = 14.sp)
-                }
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier =
-                    Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.LocationOn,
-                        contentDescription = "Map",
-                        modifier = Modifier
-                            .padding(bottom = 3.dp)
-                            .size(60.dp)
-                            .clickable { })
-                    Text(text = "View location", fontSize = 14.sp)
-                }
+//                Column(
+//                    modifier = Modifier
+//                        .weight(1f)
+//                        .clickable { },
+//                    verticalArrangement = Arrangement.Center,
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Outlined.PieChart,
+//                        contentDescription = "Gauge",
+//                        modifier = Modifier
+//                            .padding(bottom = 3.dp)
+//                            .size(60.dp)
+//                    )
+//                    Text(text = "Gauge", fontSize = 14.sp)
+//                }
+                DeviceDetailsPage(
+                    deviceId = deviceId,
+                    text = "Static Chart",
+                    icons = Icons.Outlined.PieChart,
+                    navController = navController,
+                    screen = ParrotScreens.StaticChartScreen.name,
+                    modifier = Modifier.weight(1f)
+                )
+
+                DeviceDetailsPage(
+                    deviceId = deviceId,
+                    text = "View Location",
+                    icons = Icons.Outlined.LocationOn,
+                    navController = navController,
+                    screen = ParrotScreens.SummarizedChartScreen.name,
+                    modifier = Modifier.weight(1f)
+                )
+
             }
 
         }
+
+
     }
 }
 
+@Composable
+fun DeviceDetailsPage(
+    modifier: Modifier = Modifier,
+    deviceId: String,
+    text: String,
+    icons: ImageVector, screen: String,
+    navController: NavController,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier =
+        modifier
+            .clickable { navController.navigate("$screen/deviceId/$deviceId") }
+    ) {
+        Icon(
+            imageVector = icons,
+            contentDescription = text,
+            modifier = Modifier
+                .padding(bottom = 3.dp)
+                .size(60.dp)
+                .clickable { navController.navigate("${ParrotScreens.SummarizedChartScreen.name}/deviceId/$deviceId") })
+        Text(text = text, fontSize = 14.sp)
+    }
+}

@@ -31,6 +31,20 @@ interface AssetApi {
         @Path("endDate") endDate: String,
     ): Response<LastStatus>
 
+    @GET("charts/time-series/deviceId/{deviceId}/companyId/{companyId}/startDevNetwkTime/{startTime}/stopDevNetwkTime/{endTime}")
+    suspend fun summarizedChart(
+        @Path("deviceId") deviceId: String,
+        @Path("companyId") companyId: String,
+        @Path("startTime") startTime: String,
+        @Path("endTime") endTime: String,
+    ): Response<List<Chart>>
+
+    @GET("charts/static-charts/deviceId/{deviceId}/companyId/{companyId}")
+    suspend fun staticChart(
+        @Path("deviceId") deviceId: String,
+        @Path("companyId") companyId: String,
+    ):Response<List<Chart>>
+
     @POST("setup/archilogic/get-access-token")
     suspend fun tempToken(): Response<TempKey>
 
