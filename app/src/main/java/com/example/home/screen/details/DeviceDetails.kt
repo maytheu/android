@@ -111,7 +111,7 @@ fun Details(
                 }
 
                 ChartMenu(
-                    deviceId = lastStatus.data?.response!!.deviceId!!,
+                    deviceId = deviceId,
                     navController = navController
                 )
             }
@@ -169,22 +169,7 @@ fun ChartMenu(navController: NavController, deviceId: String) {
                     .fillMaxWidth()
                     .padding(top = 20.dp)
             ) {
-//                Column(
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .clickable { },
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Outlined.PieChart,
-//                        contentDescription = "Gauge",
-//                        modifier = Modifier
-//                            .padding(bottom = 3.dp)
-//                            .size(60.dp)
-//                    )
-//                    Text(text = "Gauge", fontSize = 14.sp)
-//                }
+
                 DeviceDetailsPage(
                     deviceId = deviceId,
                     text = "Static Chart",
@@ -232,7 +217,7 @@ fun DeviceDetailsPage(
             modifier = Modifier
                 .padding(bottom = 3.dp)
                 .size(60.dp)
-                .clickable { navController.navigate("${ParrotScreens.SummarizedChartScreen.name}/deviceId/$deviceId") })
+                .clickable { navController.navigate("$screen/deviceId/$deviceId") })
         Text(text = text, fontSize = 14.sp)
     }
 }

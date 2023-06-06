@@ -81,91 +81,52 @@ fun ShowDevicesOnFloor(
 
 @Composable
 fun DeviceCard(
-    devices: List<Device>? = null,
+    devices: List<Device>,
     floorId: String,
     planViewModel: PlanViewModel,
     navController: NavController,
 ) {
-    if (!devices.isNullOrEmpty()) {
-        val phoneDims = LocalContext.current.resources.displayMetrics
-        val sdkLoadingState = remember { mutableStateOf(false) }
-        Column {
-            val tempKey = produceState<Progress<TempKey, Boolean, Exception>>(
-                initialValue = Progress(
-                    TempKey(
-                        ""
-                    ), true, Exception("")
-                )
-            ) {
-                value = planViewModel.getTempKey()
-            }.value
-
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(phoneDims.heightPixels.dp.times(0.35f)),
-                color = Color(0xFFEEF1EF),
-                shape = RoundedCornerShape(20.dp),
-            ) {
-                if (tempKey.loading == true) {
-                    Log.d("TAG", "DeviceCard: loading")
-                } else {
-                    LoadFpeSdk(
-                        floorPlanId = floorId,
-                        key = tempKey.data?.authorization!!,
-                        sdkLoadingState,
-                        devices,
-                        navController
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .fillMaxHeight(),
-//                color = Color(0xFFEEF1EF),
-//                shape = RoundedCornerShape(20.dp),
-//            ) {
-//                LazyColumn(
-//                    modifier = Modifier.padding(2.dp), contentPadding = PaddingValues(1.dp)
-//                ) {
-//                    items(items = devices) { device ->
-//                        DeviceExpandableCard(device)
-//                    }
-//                }
-//            }
-        }
-    }
-
-}
-
-@Composable
-fun DeviceExpandableCard(device: Device) {
+    Log.d("TAG", "DeviceCard: $devices")
     val phoneDims = LocalContext.current.resources.displayMetrics
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        color = Color(0xFFEEF1EF),
-        shape = RoundedCornerShape(20.dp),
-    ) {
-        Expandable(expanded = false, title = device.deviceName) {
-            Surface(
-                modifier = Modifier
-                    .height(phoneDims.heightPixels.dp.times(0.25f))
-                    .fillMaxWidth()
-            ) {
-                LazyColumn(modifier = Modifier.padding(5.dp)) {
-                    items(items = device.attributes) { att -> AttributeCard(att) }
-                }
+    val sdkLoadingState = remember { mutableStateOf(false) }
+    Column {
+        val tempKey = produceState<Progress<TempKey, Boolean, Exception>>(
+            initialValue = Progress(
+                TempKey(
+                    ""
+                ), true, Exception("")
+            )
+        ) {
+            value = planViewModel.getTempKey()
+        }.value
+
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(phoneDims.heightPixels.dp.times(0.35f)),
+            color = Color(0xFFEEF1EF),
+            shape = RoundedCornerShape(20.dp),
+        ) {
+            if (tempKey.loading == true) {
+                Log.d("TAG", "DeviceCard: loading")
+            } else {
+                //TODO handle empty devices
+                LoadFpeSdk(
+                    floorPlanId = floorId,
+                    key = tempKey.data?.authorization!!,
+                    sdkLoadingState,
+                    devices,
+                    navController
+                )
             }
         }
+
+//            Spacer(modifier = Modifier.height(10.dp))
     }
 
+
 }
+
 
 @Composable
 fun AttributeCard(att: Attribute) {
@@ -373,7 +334,7 @@ class FloorNavInterface(private val navController: NavController) {
     @JavascriptInterface
     fun deviceDetailsScreen(deviceId: String) {
         val activity = navController.context as? Activity
-        activity?.runOnUiThread{
+        activity?.runOnUiThread {
             navController.navigate("${ParrotScreens.DeviceDetailsScreen.name}/deviceId/${deviceId}")
         }
     }

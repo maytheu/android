@@ -24,7 +24,7 @@ interface AssetApi {
     @GET("company/company-date-parameter/companyId/{companyId}")
     suspend fun dateParams(@Path("companyId") companyId: String): Response<DateParams>
 
-    @GET("device/deviceLogHistory/deviceId/{deviceId}/startDate/{startDate}/endDate/{endDate")
+    @GET("device/deviceLogHistory/deviceId/{deviceId}/startDate/{startDate}/endDate/{endDate}")
     suspend fun logStatus(
         @Path("deviceId") deviceId: String,
         @Path("startDate") startDate: String,

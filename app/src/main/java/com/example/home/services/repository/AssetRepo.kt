@@ -1,5 +1,6 @@
 package com.example.home.services.repository
 
+import android.util.Log
 import com.example.home.model.*
 import com.example.home.services.dao.AssetApi
 import com.example.home.utils.Progress
@@ -43,13 +44,54 @@ class AssetRepo @Inject constructor(private val api: AssetApi) {
     suspend fun lastDeviceStatus(deviceId: String): Progress<Response<LastStatus>, Boolean, Exception> {
         val resp = try {
             api.latestDeviceStatus(deviceId)
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             return Progress(e = e)
         }
         return Progress(resp)
     }
 
+    suspend fun deviceLog(
+        deviceId: String,
+        startDate: String,
+        endDate: String,
+    ): Progress<Response<LastStatus>, Boolean, java.lang.Exception> {
+        val resp = try {
+            api.logStatus(deviceId = deviceId, startDate, endDate)
+        } catch (e: Exception) {
+            return Progress(e = e)
+        }
+        return Progress(resp)
+    }
 
+    suspend fun staticChart(
+        deviceId: String,
+        companyId: String,
+    ): Progress<Response<List<Chart>>, Boolean, java.lang.Exception> {
+        val resp = try {
+            api.staticChart(deviceId = deviceId, companyId)
+        } catch (e: Exception) {
+            return Progress(e = e)
+        }
+        return Progress(resp)
+    }
 
+    suspend fun timeSeriesChart(
+        deviceId: String,
+        companyId: String,
+        startDate: String,
+        endDate: String,
+    ): Progress<Response<List<Chart>>, Boolean, java.lang.Exception> {
+        val resp = try {
+            api.summarizedChart(
+                deviceId = deviceId,
+                companyId = companyId,
+                startTime = startDate,
+                endDate
+            )
+        } catch (e: Exception) {
+            return Progress(e = e)
+        }
+        return Progress(resp)
+    }
 
 }
