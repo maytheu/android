@@ -96,7 +96,7 @@ fun DeviceLogs(deviceId: String, logsViewModel: LogsViewModel) {
                         "sequence" to msg.seqNumber,
                         "title" to msg.deviceLog[0].dataGroupAttributes[0].attribute,
                         "type" to msg.deviceLog[0].dataGroup,
-                        "data" to msg.deviceLog[0].dataGroupAttributes.map { it }
+                        "data" to msg.deviceLog[0].dataGroupAttributes.map { attr-> "${attr.attribute.replace("_"," ")}: ${attr.attributeValue}" }
                     )
 
                     val secondMap = mapOf(
@@ -104,7 +104,7 @@ fun DeviceLogs(deviceId: String, logsViewModel: LogsViewModel) {
                         "sequence" to msg.seqNumber,
                         "title" to "Atlas network position",
                         "type" to msg.deviceLog[1].dataGroup,
-                        "data" to msg.deviceLog[1].dataGroupAttributes.map { it }
+                        "data" to msg.deviceLog[1].dataGroupAttributes.map { attr-> "${attr.attribute.replace("_"," ")}: ${attr.attributeValue}" }
                     )
                     allLogs.add(firstMap)
                     allLogs.add(secondMap)
@@ -114,8 +114,8 @@ fun DeviceLogs(deviceId: String, logsViewModel: LogsViewModel) {
 
                 Surface(
                     modifier = Modifier
-                        .fillMaxWidth()
-                    ,                    color = Color(0xFFEEF1EF),
+                        .fillMaxWidth(),
+                    color = Color(0xFFEEF1EF),
                     shape = RoundedCornerShape(20.dp),
                 ) {
                     LazyColumn(
@@ -130,28 +130,38 @@ fun DeviceLogs(deviceId: String, logsViewModel: LogsViewModel) {
         }
     }
 }
+
 @Composable
-fun DeviceExpandableCard(device: Any) {
-    Log.d("TAG", "DeviceExpandableCard: $device")
+fun DeviceExpandableCard(device: Map<String, Any>) {
     val phoneDims = LocalContext.current.resources.displayMetrics
-//    Surface(
-//        modifier = Modifier
-//            .fillMaxWidth(),
-//        color = Color(0xFFEEF1EF),
-//        shape = RoundedCornerShape(20.dp),
-//    ) {
-//        Expandable(expanded = false, title = device.title) {
-//            Surface(
-//                modifier = Modifier
-//                    .height(phoneDims.heightPixels.dp.times(0.25f))
-//                    .fillMaxWidth()
-//            ) {
-//                LazyColumn(modifier = Modifier.padding(5.dp)) {
-//                    items(items = device.attributes) { att -> AttributeCard(att) }
-//                }
-//            }
-//        }
-//    }
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
+        color = Color(0xFFEEF1EF),
+    ) {
+        Expandable(expanded = false, title = "${device["title"]}") {
+            Surface(
+                modifier = Modifier
+                    .height(phoneDims.heightPixels.dp.times(0.1f))
+                    .fillMaxWidth()
+            ) {
+                //reformat the attribute type and value
+                val data = device["data"].toString().split(",")
+
+                LazyColumn(modifier = Modifier.padding(5.dp)) {
+                    items(items = data){
+                        Text(text = it.replace("[","").replace("]",""))
+                    }
+                    item{
+                        Text(text = "Time: ${device["time"]}")
+                        Text(text = "Data Type: ${device["type"]}")
+                        Text(text = "Sequence: ${device["sequence"]}")
+
+                    }
+                }
+            }
+        }
+    }
 
 }
 
