@@ -91,5 +91,8 @@ dependencies {
 
     implementation 'androidx.webkit:webkit:1.6.1'
 
+    //chart
+//    implementation "com.github.tehras:charts:0.2.4-alpha"
+    implementation("com.himanshoe:charty:1.0.1")
 
 }

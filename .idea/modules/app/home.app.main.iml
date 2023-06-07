@@ -14,6 +14,7 @@
             <stringArg name="classpath">
               <args>
                 <arg>$MODULE_DIR$/../../../app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/3742526d21439a0bb054b6ecdb161a2a/transformed/charty-1.0.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6fab30fe8caf3576fd51195296b2a7a5/transformed/hilt-navigation-compose-1.1.0-alpha01-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/b21f9b4297320bfbb3faaf0838052248/transformed/navigation-compose-2.5.3-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7113ca2f12f4750970004215ba5380a8/transformed/activity-compose-1.5.1-api.jar</arg>
@@ -27,9 +28,9 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/77ce2e17c45a45ccac14ae796abdc793/transformed/room-ktx-2.5.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/ccfea6e21e259d0aa211f5a52262f109/transformed/ui-tooling-1.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/cfc5cf0f661d5cc68b1bec425a7b090e/transformed/ui-tooling-preview-1.2.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/47b8194c96dc93a5727260e088cf9f19/transformed/material-1.1.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/7cbf7bebf0db9c48bc4f0fee13ed96f1/transformed/material-1.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/ee9b04e82378a0bb6cee4cf67ee84ef2/transformed/ui-tooling-data-1.2.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/9a12e3c57d790dd6300477b576b903ab/transformed/material-ripple-1.1.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/28c2f76fcb18c947685ffae1c996af1a/transformed/material-ripple-1.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/b767a0f7db948ac351bd4c0dfcaed272/transformed/coil-compose-2.2.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/419e09307cd07c2f61cbf92e7a5148b8/transformed/coil-compose-base-2.2.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/8bfb10ebdb188775b6ed9f63e86896b4/transformed/foundation-1.2.1-api.jar</arg>
@@ -230,13 +231,13 @@
     <orderEntry type="library" name="Gradle: androidx.activity:activity-ktx:1.5.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:1.2.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.material:material:1.1.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.material:material:1.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.animation:animation-core:1.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation:1.2.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.animation:animation:1.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation-layout:1.2.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.material:material-icons-core:1.2.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.material:material-ripple:1.1.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.material:material-ripple:1.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.navigation:navigation-runtime-ktx:2.5.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.navigation:navigation-common-ktx:2.5.3@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.navigation:navigation-common:2.5.3@aar" level="project" />
@@ -263,5 +264,6 @@
     <orderEntry type="library" name="Gradle: androidx.sqlite:sqlite-framework:2.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.room:room-ktx:2.5.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.webkit:webkit:1.6.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.himanshoe:charty:1.0.1@aar" level="project" />
   </component>
 </module>

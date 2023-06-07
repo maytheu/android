@@ -32,12 +32,19 @@ interface AssetApi {
     ): Response<LastStatus>
 
     @GET("charts/time-series/deviceId/{deviceId}/companyId/{companyId}/startDevNetwkTime/{startTime}/stopDevNetwkTime/{endTime}")
-    suspend fun summarizedChart(
+    suspend fun timeSeriesChart(
         @Path("deviceId") deviceId: String,
         @Path("companyId") companyId: String,
         @Path("startTime") startTime: String,
         @Path("endTime") endTime: String,
     ): Response<List<Chart>>
+
+    @GET("charts/combined-chart/deviceId/{deviceId}/startDevNetwkTime/{startTime}/stopDevNetwkTime/{endTime}")
+    suspend fun summarizedChart(
+        @Path("deviceId") deviceId: String,
+        @Path("startTime") startTime: String,
+        @Path("endTime") endTime: String,
+    ): Response<List<SingleChartItem>>
 
     @GET("charts/static-charts/deviceId/{deviceId}/companyId/{companyId}")
     suspend fun staticChart(

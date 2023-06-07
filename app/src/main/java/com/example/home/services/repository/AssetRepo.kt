@@ -75,16 +75,14 @@ class AssetRepo @Inject constructor(private val api: AssetApi) {
         return Progress(resp)
     }
 
-    suspend fun timeSeriesChart(
+    suspend fun summarizedChart(
         deviceId: String,
-        companyId: String,
         startDate: String,
         endDate: String,
-    ): Progress<Response<List<Chart>>, Boolean, java.lang.Exception> {
+    ): Progress<Response<List<SingleChartItem>>, Boolean, java.lang.Exception> {
         val resp = try {
             api.summarizedChart(
                 deviceId = deviceId,
-                companyId = companyId,
                 startTime = startDate,
                 endDate
             )

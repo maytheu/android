@@ -18,6 +18,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/94e44072295bfc67e47bd046d336ed7c/transformed/ui-test-junit4-1.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/bac0404c24729f476c1b361dac40cbe9/transformed/junit-1.1.5-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/47ba64e2bbceeca4585a87c3a270b6f9/transformed/espresso-core-3.5.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/3742526d21439a0bb054b6ecdb161a2a/transformed/charty-1.0.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/77ce2e17c45a45ccac14ae796abdc793/transformed/room-ktx-2.5.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/332da94e9a6729a5f4250e96b9e80e29/transformed/room-runtime-2.5.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.room/room-common/2.5.0/829a83fb92f1696a8a32f3beea884dfc87b2693/room-common-2.5.0.jar</arg>
@@ -308,6 +309,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.sqlite:sqlite-framework:2.3.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.room:room-ktx:2.5.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.webkit:webkit:1.6.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.himanshoe:charty:1.0.1@aar" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="home.app.main" />
 </module>
