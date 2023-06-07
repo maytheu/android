@@ -100,7 +100,7 @@ fun HomeContent(
 
             }
         }
-        ReadingArea(book = listOf(), navController = navController, viewModel)
+        ReadingArea(book =books, navController = navController, viewModel)
 
         TitleSection(label = "Reading list")
         BookListArea(listOfBooks = books, navController = navController, viewModel)
@@ -162,7 +162,7 @@ fun ReadingArea(book: List<Book>, navController: NavController, viewModel: HomeV
         it.startedReading != null && it.finishedReading == null
     }
     HorizontalBookScroll(listOfBooks = readingNow, viewModel = viewModel) {
-        navController.navigate("${ReaderScreens.UpdateScreen.name}/$it")
+        navController.navigate("${ReaderScreens.StatsScreen.name}")
     }
 }
 
