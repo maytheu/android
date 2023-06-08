@@ -347,7 +347,7 @@ fun BookCard(
 
 
 
-                    BookRating(score = 3.5)
+                    BookRating(score = book.rating!!)
                 }
             }
 
