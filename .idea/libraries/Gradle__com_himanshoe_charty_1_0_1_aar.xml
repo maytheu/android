@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.himanshoe:charty:1.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7b06abdc6391810a6fbdbbd3f0ba10f8/transformed/charty-1.0.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7b06abdc6391810a6fbdbbd3f0ba10f8/transformed/charty-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7b06abdc6391810a6fbdbbd3f0ba10f8/transformed/charty-1.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.himanshoe/charty/1.0.1/86ec04fb240182785645f33af1d884ddc9a8d6ce/charty-1.0.1-javadoc.jar!/" />
