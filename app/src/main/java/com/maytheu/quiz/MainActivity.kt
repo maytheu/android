@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.ads.MobileAds
 import com.maytheu.quiz.screens.QuizHome
 import com.maytheu.quiz.screens.QuizViewModel
 import com.maytheu.quiz.ui.theme.QuizTheme
@@ -22,6 +23,7 @@ import kotlin.math.log
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(this)
         setContent {
             QuizTheme {
                 // A surface container using the 'background' color from the theme

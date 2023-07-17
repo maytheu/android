@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.maytheu.quiz.model.QuestionItem
+import com.maytheu.quiz.screens.BannerAdView
 import com.maytheu.quiz.screens.QuizViewModel
 import com.maytheu.quiz.util.AppColor
 
@@ -42,6 +43,7 @@ fun Questions(quizViewModel: QuizViewModel) {
 
     if (quizViewModel.data.value.loading == true) {
         CircularProgressIndicator()
+        BannerAdView()
     } else {
         val question = try {
             questions?.get(questionIndex.value)
@@ -58,6 +60,7 @@ fun Questions(quizViewModel: QuizViewModel) {
                 ) {
                     questionIndex.value = questionIndex.value + 1
                 }
+
             }
         }
     }
@@ -200,6 +203,7 @@ fun QuestionDisplay(
                         fontSize = 17.sp
                     )
                 }
+                BannerAdView()
             }
         }
 
