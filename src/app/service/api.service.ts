@@ -68,7 +68,7 @@ export class ApiService {
   private loadQuestion(category: string): Observable<Question[]> {
     if (this._questions.value.length) return this._questions.asObservable();
     return this.http.get<Question[]>(
-      `https://raw.githubuserconent.com/itmmckernan/triviaJSON/${category}.json`
+      `https://raw.githubusercontent.com/itmmckernan/triviaJSON/master/${category}.json`
     );
   }
 }
