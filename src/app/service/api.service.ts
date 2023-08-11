@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
 import { Question } from '../model/question.interface';
 
 @Injectable({
@@ -35,8 +35,15 @@ export class ApiService {
     return { pre, next };
   }
 
-  refreshLevel(): Observable<Question[]> {
-    return of(this.shuffleQuestion(this._questions.value));
+  refreshLevel(level: number): Observable<Question[]> {
+    return this._questions.pipe(
+      map((allQuestion) => {
+        console.log(allQuestion);
+        const shuffleQuestion = this.shuffleQuestion(allQuestion);
+        const { pre, next } = this.levelQuestion(level);
+        return shuffleQuestion.splice(pre, next);
+      })
+    );
   }
 
   private shuffleQuestion(data: Question[]): Question[] {
@@ -56,7 +63,6 @@ export class ApiService {
         data[currentIndex],
       ];
     }
-    this._questions.next(data);
     return data;
   }
 
@@ -67,8 +73,10 @@ export class ApiService {
    */
   private loadQuestion(category: string): Observable<Question[]> {
     if (this._questions.value.length) return this._questions.asObservable();
-    return this.http.get<Question[]>(
-      `https://raw.githubusercontent.com/itmmckernan/triviaJSON/master/${category}.json`
-    );
+    return this.http
+      .get<Question[]>(
+        `https://raw.githubusercontent.com/itmmckernan/triviaJSON/master/${category}.json`
+      )
+      .pipe(tap((data) => this._questions.next(data)));
   }
 }

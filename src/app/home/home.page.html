@@ -9,7 +9,7 @@
     <ion-header collapse="condense">
       <ion-toolbar>
         <ion-title size="large"
-          >Question {{questionNumber+1}}/{{questions.value.length}}</ion-title
+          >Question {{questionNumber+1}}/{{questions.value?.length}}</ion-title
         >
       </ion-toolbar>
     </ion-header>
@@ -25,11 +25,26 @@
           >UI Components</a
         >
       </p>
+      <ng-container *ngFor="let question of questions.value; let i =index"
+        ><ng-container *ngIf="questionNumber === i">
+          {{question.question}}
+          <ng-container *ngFor="let option of question.choices"
+            ><p (click)="onSubmit(option, question.answer,i,nextQuestion[i])">
+              {{option}}
+            </p></ng-container
+          >
+          <button *ngIf="levelRefresh" (click)="onRefreshLevel()">
+            refresh
+          </button>
+          <button
+            *ngIf="nextQuestion[i]!==undefined"
+            (click)="onNextQuestion(i)"
+          >
+            next
+          </button>
+          <button *ngIf="nextLevel" (click)="onNextLevel()">next</button>
+        </ng-container>
+      </ng-container>
     </div>
-    <ng-container *ngFor="let question of questions.value; let i =index"
-      ><ng-container *ngIf="questionNumber === i"
-        >{{question|json}}</ng-container
-      >
-    </ng-container>
   </ion-content>
 </ng-container>
