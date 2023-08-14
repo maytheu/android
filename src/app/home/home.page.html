@@ -1,7 +1,7 @@
 <ng-container *ngIf="questions$|payload|async as questions">
   <ion-header [translucent]="true">
     <ion-toolbar>
-      <ion-title> Question {{questionNumber+1}} </ion-title>
+      <ion-title> Question {{questionNumber+1}} / {{questions.value?.length}} </ion-title>
     </ion-toolbar>
   </ion-header>
 

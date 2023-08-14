@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../service/api.service';
 import { Observable, tap } from 'rxjs';
 import { Question } from '../model/question.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,12 +17,16 @@ export class HomePage implements OnInit {
   totalQuestion!: number;
   levelRefresh = false;
   nextLevel = false;
-  correctAnswer!:number
+  correctAnswer!: number;
 
-  constructor(private service: ApiService) {}
+  constructor(private service: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    const category  =  this.route.snapshot//.params.get('category')
+    console.log(category);
+    
     this.questions$ = this.onLoadQuestions();
+
   }
 
   onSubmit(
